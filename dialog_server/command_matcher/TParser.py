@@ -6,9 +6,9 @@ sys.path.append("../..")
 import dialog_server
 
 class TParser:
-    def __init__(self):
+    def __init__(self, confPath=""):
         """put fields here"""
 
-    def __call__(self):
-        """put default action here"""
-
+    def __call__(self, command, rawText):
+        command.RawText = rawText
+        command.LexemsList = command.RawText.split(" ")

@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 import sys
 import os
 import re
@@ -7,8 +8,11 @@ import dialog_server
 
 class TCommand:
     def __init__(self):
-        """put fields here"""
+        self.RawText = ""
+        self.LexemsList = list()
+        self.CmdType = None
+        self.CmdExecObj = None
+
 
     def __call__(self):
-        """put default action here"""
-
+        self.CmdExecObj(self)
