@@ -16,7 +16,7 @@ def get_definition(term):
     definition = re.sub("(<[^<>]*>|\[[^\[\]]*\])", "", definition)
     return definition
 
-#try:
-print get_definition(sys.argv[1])
-#except:
-#    sys.exit(1)
+try:
+    print get_definition(sys.argv[1])
+except:
+    sys.exit(1)
