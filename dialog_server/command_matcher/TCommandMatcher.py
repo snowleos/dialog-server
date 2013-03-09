@@ -2,46 +2,32 @@
 import sys
 import os
 import re
+import copy
 import subprocess
 sys.path.append("../..")
 import dialog_server
-
-class TCommandType:
-    NoCommand = 0
-    Search = NoCommand + 1
-    Wiki = Search + 1
-    News = Wiki + 1
-    Weather = News + 1
-    ExternalDevice = Weather + 1
-    Notify = ExternalDevice + 1
-    TypesCount = Notify + 1
+from dialog_server.command_matcher.TCommandType import *
+import dialog_server.command_matcher.TBayesClassifier as TBayesClassifier
 
 class TCommandMatcher:
     def __init__(self):
         """put fields here"""
 
-    def __call__(self, command):
+    def FindMostProbCommands(self, probCommandsList, commandsToExecList):
+        if len(probCommandsList) != 0:
+            mostProbCmd = probCommandsList[0]
+            maxProb = probCommandsList[0].Prob
+            for i in xrange(1, len(probCommandsList)):
+                if probCommandsList[i].Prob > maxProb:
+                    maxProb = probCommandsList[i].Prob
+                    mostProbCmd = probCommandsList[i]
+            commandsToExecList.append(copy.copy(mostProbCmd))
+            print commandsToExecList[0].CmdType.Name
+
+    def __call__(self, command, commandsToExecList):
         # got command with splitted words
-        probList = [0] * TCommandType.TypesCount
-
-        outStr = " ".join(command.LexemsList).encode("utf-8")
-        print outStr
-
-        for word in command.LexemsList:
-            if word == u"википедия":
-                probList[TCommandType.Wiki] = 1.0
-            elif word == u"погода":
-                probList[TCommandType.Weather = 1.0
-
-        mostProbCmd = TCommandType.NoCommand
-        maxProb = -1.0
-        for i in xrange(len(probList)):
-            if probList[i] > maxProb:
-                maxProb = probList[i]
-                mostProbCmd = i
-
-
-
-
-    
-
+        probCommandsList = list()
+        cmdClassifier = TBayesClassifier.TBayesClassifier()
+        cmdClassifier(command, probCommandsList)
+        self.FindMostProbCommands(probCommandsList, commandsToExecList)
+        print commandsToExecList[0].CmdType.Name

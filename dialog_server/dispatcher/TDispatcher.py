@@ -16,11 +16,20 @@ class TDispatcher:
     def __call__(self):
         """put default action here"""
 
+    def SendResult(self, command):
+        print command.ExecStatus
+        print command.ResultText
+        print command.DebugText
+        replyText = command.ResultText
+        self.ReplyClient.SendReply(replyText)
+
     def RequestHandlerFunc(self, ReqString):
-
         command = TCommand.TCommand()
-
         self.Parser(command, ReqString)
-        self.CommandMatcher(command)
+        # we could have some commands in input one
+        commandsToExecList = list()
+        self.CommandMatcher(command, commandsToExecList)
 
-        
+        for execCommand in commandsToExecList:
+            execCommand()
+            self.SendResult(execCommand)

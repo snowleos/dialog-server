@@ -10,6 +10,7 @@ import dialog_server.http_client.THttpReply as THttpReply
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
 import dialog_server.dispatcher.TDispatcher as TDispatcher
 import dialog_server.command_matcher.TParser as TParser
+import dialog_server.exec_objects.TExecObjectBase as TExecObjectBase
 
 PROJECT_BASE_DIR = os.getcwd() + "/.."
 print PROJECT_BASE_DIR
@@ -37,6 +38,11 @@ def main():
             confPath=PROJECT_BASE_DIR + \
             "/conf/dialog_server.parser.conf")
 
+    TExecObjectBase.TExecObjectBase.ProjectBaseDir = PROJECT_BASE_DIR+"/"
+    TExecObjectBase.TExecObjectBase.ConfPath = \
+            PROJECT_BASE_DIR + \
+            "/conf/dialog_server.exec_objects.conf"
+
     cmdMatcher = TCommandMatcher.TCommandMatcher() 
     dispatcher = TDispatcher.TDispatcher(\
             client = client, \
@@ -45,8 +51,9 @@ def main():
 
     server.RequestHandlerFunc = dispatcher.RequestHandlerFunc
 
-    dispatcher.RequestHandlerFunc(u"некоторая команда на русском")
-    #server.Start()
+    #dispatcher.RequestHandlerFunc(u"некоторая погода команда на русском")
+    #dispatcher.RequestHandlerFunc(u"википедия барселона")
+    server.Start()
 
 
 if __name__ == '__main__':

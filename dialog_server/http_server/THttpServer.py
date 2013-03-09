@@ -40,6 +40,7 @@ class THttpServer:
     GetReply.exposed = True
 
     def SendRequest(self, ReqString=None):
+        print >>sys.stderr, "ReqString", ReqString.encode("utf-8")
         self.RequestHandlerFunc(ReqString)
         return "OK"
     SendRequest.exposed = True
