@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Dialog HTTP server
 Got query like 
