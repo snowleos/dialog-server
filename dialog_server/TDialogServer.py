@@ -24,6 +24,14 @@ class TDialogServer:
 
 def main():
 
+    #from extern_lib.derivat_bind import TDerivatBind
+    #Derivat = TDerivatBind(\
+    #        confPath=PROJECT_BASE_DIR + \
+    #        "/conf/extern_lib.derivat_bind.conf")
+    #print Derivat(u"новости", u"новостной")
+    #sys.exit(0)
+
+
     # init all main objects
     server = THttpServer.THttpServer(\
             confPath=PROJECT_BASE_DIR + \

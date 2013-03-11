@@ -3,7 +3,10 @@ dialog_server/TDialogServer
 dialog_server/command/
 dialog_server/command/TCommand
 dialog_server/command/TCommandProps
+dialog_server/command/TCommandCreator
 dialog_server/command_matcher/
+dialog_server/command_matcher/TExactClassifier
+dialog_server/command_matcher/TSameRootClassifier
 dialog_server/command_matcher/TParser
 dialog_server/command_matcher/TCommandMatcher
 dialog_server/command_matcher/TTypeRecognizer

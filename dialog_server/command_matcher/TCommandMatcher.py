@@ -7,7 +7,8 @@ import subprocess
 sys.path.append("../..")
 import dialog_server
 from dialog_server.command_matcher.TCommandType import *
-import dialog_server.command_matcher.TBayesClassifier as TBayesClassifier
+from dialog_server.command_matcher.TBayesClassifier import *
+from dialog_server.command_matcher.TExactClassifier import *
 
 class TCommandMatcher:
     def __init__(self):
@@ -27,7 +28,7 @@ class TCommandMatcher:
     def __call__(self, command, commandsToExecList):
         # got command with splitted words
         probCommandsList = list()
-        cmdClassifier = TBayesClassifier.TBayesClassifier()
+        cmdClassifier = TExactClassifier()
         cmdClassifier(command, probCommandsList)
         self.FindMostProbCommands(probCommandsList, commandsToExecList)
         print commandsToExecList[0].CmdType.Name
