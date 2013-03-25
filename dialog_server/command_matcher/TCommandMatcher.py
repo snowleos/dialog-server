@@ -7,8 +7,8 @@ import subprocess
 sys.path.append("../..")
 import dialog_server
 from dialog_server.command_matcher.TCommandType import *
-from dialog_server.command_matcher.TBayesClassifier import *
-from dialog_server.command_matcher.TExactClassifier import *
+from dialog_server.classifier.TBayesClassifier import *
+from dialog_server.classifier.TExactClassifier import *
 
 class TCommandMatcher:
     def __init__(self):

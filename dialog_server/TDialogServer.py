@@ -8,6 +8,7 @@ import dialog_server as dialog_server
 import dialog_server.http_server.THttpServer as THttpServer
 import dialog_server.http_client.THttpReply as THttpReply
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
+import dialog_server.command.TCommand as TCommand
 import dialog_server.dispatcher.TDispatcher as TDispatcher
 import dialog_server.command_matcher.TParser as TParser
 import dialog_server.exec_objects.TExecObjectBase as TExecObjectBase
@@ -31,8 +32,16 @@ def main():
     #print Derivat(u"новости", u"новостной")
     #sys.exit(0)
 
-
     # init all main objects
+    parser = TParser.TParser(\
+            confPath=PROJECT_BASE_DIR + \
+            "/conf/dialog_server.parser.conf",\
+            wizardConfPath=PROJECT_BASE_DIR + \
+            "/conf/extern_lib.wizard_bind.conf")
+    command = TCommand.TCommand()
+    #parser(command, u"мама мыла раму")
+    #sys.exit(0)
+
     server = THttpServer.THttpServer(\
             confPath=PROJECT_BASE_DIR + \
             "/conf/dialog_server.http_server.conf")
@@ -41,10 +50,6 @@ def main():
             confPath=PROJECT_BASE_DIR + \
             "/conf/dialog_server.http_reply.conf")
     client.SendReply("Hallo!")
-
-    parser = TParser.TParser(\
-            confPath=PROJECT_BASE_DIR + \
-            "/conf/dialog_server.parser.conf")
 
     TExecObjectBase.TExecObjectBase.ProjectBaseDir = PROJECT_BASE_DIR+"/"
     TExecObjectBase.TExecObjectBase.ConfPath = \

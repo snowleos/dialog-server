@@ -17,6 +17,7 @@ for line in FINP:
             pathList = line.split("/")
             dirsCount = len(pathList) - 1
             FMOD = open(line+".py", "w")
+            print >> FMOD, "# vim: set fileencoding=utf-8"
             print >> FMOD, "import sys\nimport os\nimport re\nimport subprocess"
             print >> FMOD, "sys.path.append(\"" + "/".join(".." for i in xrange(dirsCount)) + "\")"
             print >> FMOD, "import dialog_server\n"

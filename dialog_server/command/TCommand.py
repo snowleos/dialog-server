@@ -2,6 +2,7 @@
 import sys
 import os
 import re
+import json
 import subprocess
 sys.path.append("../..")
 import dialog_server
@@ -9,10 +10,13 @@ from dialog_server.command_matcher.TCommandType import *
 
 class TCommand:
     def __init__(self):
-        self.RawText = ""
-        self.LexemsList = list()
+        self.RawText = "" # to refactor
+        self.Preprocessed = None
+        self.Features = None
+
+        self.LexemsList = list() # to refactor
         self.CmdExecObj = None
-        self.CmdType = TCommandType["NoCommand"]
+        self.CmdType = TCommandType["NoCommand"] # to refactor
         # split all lexems to types: Command and Request
         self.CommandLexems = list()
         self.RequestLexems = list()
@@ -25,3 +29,39 @@ class TCommand:
     def __call__(self):
         self.CmdExecObj = self.CmdType.GetExecObj()
         self.ExecStatus, self.ResultText, self.DebugText = self.CmdExecObj(self.RequestLexems)
+
+    def Read(self, line):
+        jsonObj = json.loads(line)
+        self.RawText = jsonObj["RawText"]
+        self.Preprocessed = jsonObj["Preprocessed"]
+        self.Features = jsonObj["Features"]
+        self.LexemsList = jsonObj["LexemsList"]
+        self.CmdExecObj = None
+        self.CmdType = jsonObj["CmdType"]
+        self.CommandLexems = jsonObj["CommandLexems"]
+        self.RequestLexems = jsonObj["RequestLexems"]
+        self.Prob = float(jsonObj["Prob"])
+        self.ExecStatus = int(jsonObj["ExecStatus"])
+        self.ResultText = jsonObj["ResultText"]
+        self.DebugText = jsonObj["DebugText"]
+
+    # returns JSON string
+    def Write(self):
+        binData = json.dumps({
+            "RawText": self.RawText,
+            "Preprocessed": self.Preprocessed,
+            "Features": self.Features,
+            "LexemsList": self.LexemsList,
+            #"CmdExecObj": not serialized,
+            "CmdType": self.CmdType,
+            "CommandLexems": self.CommandLexems,
+            "RequestLexems": self.RequestLexems,
+            "Prob": self.Prob,
+            "ExecStatus": self.ExecStatus,
+            "ResultText": self.ResultText,
+            "DebugText": self.DebugText
+            })
+        print binData
+        return binData
+
+

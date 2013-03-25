@@ -7,9 +7,9 @@ sys.path.append("../..")
 import dialog_server
 from dialog_server.command_matcher.TCommandType import *
 from dialog_server.command.TCommandCreator import *
+from dialog_server.classifier.TBaseClassifier import *
 
-class TBayesClassifier:
-    Epsilon = 0.00000000001
+class TSynonymsClassifier(TBaseClassifier):
     def __init__(self):
         """put fields here"""
 

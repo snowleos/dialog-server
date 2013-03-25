@@ -24,6 +24,7 @@ class THttpReply:
 
     def SendReply(self, replyStr):
         print >> sys.stderr, "Send reply:", replyStr.encode("utf-8")
+        print >> sys.stdout, "Reply:", replyStr.encode("utf-8")
         self.Conn.request("GET", "/GetReply?ReqString=" + urllib2.quote(replyStr.encode("utf-8")))
         resp = self.Conn.getresponse()
         print >> sys.stderr, "Reply sent. Answer:", resp.read()
