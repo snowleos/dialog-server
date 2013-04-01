@@ -4,16 +4,21 @@ import os
 import re
 import subprocess
 sys.path.append("..")
-import dialog_server as dialog_server
-import dialog_server.http_server.THttpServer as THttpServer
-import dialog_server.http_client.THttpReply as THttpReply
-import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
-import dialog_server.command.TCommand as TCommand
-import dialog_server.dispatcher.TDispatcher as TDispatcher
-import dialog_server.command_matcher.TParser as TParser
-import dialog_server.exec_objects.TExecObjectBase as TExecObjectBase
 
-PROJECT_BASE_DIR = os.getcwd() + "/.."
+from dialog_server.classifier.TBayesClassifier import *
+from dialog_server.classifier.TExactClassifier import *
+from dialog_server.command.TCommand import *
+from dialog_server.command.TCommandCreator import *
+from dialog_server.exec_objects.TExecObjectBase import *
+import common_lib.common_ops as common_ops
+import dialog_server as dialog_server
+import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
+import dialog_server.command_matcher.TParser as TParser
+import dialog_server.dispatcher.TDispatcher as TDispatcher
+import dialog_server.http_client.THttpReply as THttpReply
+import dialog_server.http_server.THttpServer as THttpServer
+
+PROJECT_BASE_DIR = common_ops.GetProjectBaseDir()
 print PROJECT_BASE_DIR
 
 class TDialogServer:
@@ -25,6 +30,7 @@ class TDialogServer:
 
 def main():
 
+    # example of how to use root extractor
     #from extern_lib.derivat_bind import TDerivatBind
     #Derivat = TDerivatBind(\
     #        confPath=PROJECT_BASE_DIR + \
@@ -32,16 +38,24 @@ def main():
     #print Derivat(u"новости", u"новостной")
     #sys.exit(0)
 
-    # init all main objects
+    # ------------------------init all main objects --------------------
     parser = TParser.TParser(\
             confPath=PROJECT_BASE_DIR + \
             "/conf/dialog_server.parser.conf",\
             wizardConfPath=PROJECT_BASE_DIR + \
             "/conf/extern_lib.wizard_bind.conf")
-    command = TCommand.TCommand()
-    #parser(command, u"мама мыла раму")
-    #sys.exit(0)
+    command = TCommand()
 
+    cmdMatcher = TCommandMatcher.TCommandMatcher()
+    exactClassifier = TExactClassifier()
+    cmdMatcher.ClassifiersList.append((None, exactClassifier))
+    bayesClassifier = TBayesClassifier(common_ops.GetProjectBaseDir() + \
+            "/conf/bayes_classifier.conf")
+    bayesClassifier.LoadModel()
+    cmdMatcher.ClassifiersList.append((TBayesFeatureExtractor(), bayesClassifier))
+    
+
+    # ---------------------- init client and server --------------------
     server = THttpServer.THttpServer(\
             confPath=PROJECT_BASE_DIR + \
             "/conf/dialog_server.http_server.conf")
@@ -51,21 +65,15 @@ def main():
             "/conf/dialog_server.http_reply.conf")
     client.SendReply("Hallo!")
 
-    TExecObjectBase.TExecObjectBase.ProjectBaseDir = PROJECT_BASE_DIR+"/"
-    TExecObjectBase.TExecObjectBase.ConfPath = \
-            PROJECT_BASE_DIR + \
-            "/conf/dialog_server.exec_objects.conf"
-
-    cmdMatcher = TCommandMatcher.TCommandMatcher() 
+    # ---------------------- init main dispatcher ----------------------    
     dispatcher = TDispatcher.TDispatcher(\
             client = client, \
             parser = parser, \
             commandMatcher = cmdMatcher)
 
+    # set handle function
     server.RequestHandlerFunc = dispatcher.RequestHandlerFunc
 
-    #dispatcher.RequestHandlerFunc(u"некоторая погода команда на русском")
-    #dispatcher.RequestHandlerFunc(u"википедия барселона")
     server.Start()
 
 

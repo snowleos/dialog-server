@@ -24,7 +24,9 @@ class TModelIO:
             remPosList = [i for i in xrange(len(modelList)) if modelList[m].ContextId not in contextIdList]
 
         # 2. get list of model ids that are already in list
-        existIds = dict((modelList[i].ModelId, i) for i in xrange(len(modelList)))
+        existIds = dict()
+        for i in xrange(len(modelList)):
+            existIds[modelList[i].ModelId] = i
 
         # 3. read file. Contains: modelId \t contextId \t model in JSON
         for line in open(tableName, "r"):
@@ -55,8 +57,7 @@ class TModelIO:
             raise Exception("you have to pass modelList as list() object")
         if os.path.exists(tableName):
             # 1. make .bak table
-            bakTablename = tableName+".bak."+datetime.now().strftime("%s")
-            os.rename(tableName, bakTablename)
+            bakTablename = self.MoveToBackup(tableName)
             modifiedModelsDict = weakref.WeakValueDictionary()
             for model in modelList:
                 if (model.Modified == True):
@@ -96,4 +97,13 @@ class TModelIO:
     @classmethod
     def GetNewModelId(cls):
         return datetime.now().strftime("%s%f") + str(random.randrange(1000000))
+
+    def MoveToBackup(self, tableName):
+        if os.path.exists(tableName):
+            # 1. make .bak table
+            bakTablename = tableName+".bak."+datetime.now().strftime("%s")
+            os.rename(tableName, bakTablename)
+            return bakTablename
+        else:
+            return ""
 

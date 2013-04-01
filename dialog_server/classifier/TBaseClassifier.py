@@ -3,18 +3,23 @@ import sys
 import os
 import re
 import subprocess
-sys.path.append("../..")
+sys.path.append("..")
+import common_lib.common_ops as common_ops
 import dialog_server
 from dialog_server.command_matcher.TCommandType import *
 from dialog_server.command.TCommandCreator import *
 from dialog_server.classifier.TBaseFeatureExtractor import *
 from dialog_server.classifier.TBaseModel import *
+from dialog_server.classifier.TModelIO import *
+import common_lib.common_ops as common_ops
 
 class TBaseClassifier:
+    Epsilon = 0.00000000001
     def __init__(self, confPath=""):
-        self.Conf = ConfigParser.ConfigParser()
-        self.Conf.read(confPath)
+        print >> sys.stderr , confPath 
+        self.Conf = common_ops.ReadConfig(confPath)
         self.Model = None #TBaseModel()
+        self.ModelType = TBaseModel # must be set at child class
         self.FeatureExtractor = None #TBaseFeatureExtractor()
         
     def __call__(self, command, probCommandsDict):
@@ -28,8 +33,32 @@ class TBaseClassifier:
         print >> sys.stderr, "LearnCommand() not implemented"
     def FinishLearn(self):
         print >> sys.stderr, "FinishLearn() not implemented"
+        
     def SaveModel(self):
-        print >> sys.stderr, "SaveModel() not implemented"
+        ModelIO = TModelIO()
+        modelTableName = self.Conf.get("Model", "ModelTableName")
+        ModelIO.Write(common_ops.GetProjectBaseDir() + \
+                modelTableName, None, [self.Model])
+
     def LoadModel(self):
-        print >> sys.stderr, "LoadModel() not implemented"
+        ModelIO = TModelIO()
+        modelTableName = self.Conf.get("Model", "ModelTableName")
+        modelList = list()
+        ModelIO.Read(common_ops.GetProjectBaseDir() + \
+                modelTableName, None, self.ModelType, modelList)
+        self.Model = modelList[-1]
+
+    @classmethod
+    def Equals(self, num1, num2):
+        return abs(num1 -num2) < self.Epsilon
+
+    @classmethod
+    def NormProbList(self, probCommandsDict):
+        probSum = 0.0
+        for probCmd in probCommandsDict.values():
+            probSum += probCmd.Prob
+        if not self.Equals(probSum, 0.0):
+            for probCmd in probCommandsDict.keys():
+                probCommandsDict[probCmd].Prob = \
+                        probCommandsDict[probCmd].Prob / probSum
 

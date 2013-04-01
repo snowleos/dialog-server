@@ -38,7 +38,7 @@ ModelIO.Write("bayes_model.txt", None, [bayesClassifier.Model])
 print "Modified", bayesClassifier.Model.Modified
 
 
-probCommandsDict = defaultdict(lambda:0)
+probCommandsDict = defaultdict(lambda:None)
 
 command.Preprocessed = u'Паглафья'
 GetFeatures(command)

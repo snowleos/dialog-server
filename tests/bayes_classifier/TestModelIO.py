@@ -18,3 +18,6 @@ newModel.Modified = True
 newModel.BinData = "testModifiedModel"
 modelList.append(newModel)
 ModelIO.Write("test_model2.txt", None, modelList)
+ModelIO.MoveToBackup("test_model2.txt")
+ModelIO.Write("test_model2.txt", None, modelList)
+

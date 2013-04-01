@@ -8,58 +8,53 @@ sys.path.append("../..")
 import dialog_server
 from dialog_server.command_matcher.TCommandType import *
 from dialog_server.command.TCommand import *
-from dialog_server.exec_objects.TExecObjectSpecify import *
-from dialog_server.exec_objects.TExecObjectOperation import *
-from dialog_server.exec_objects.TExecObjectMetaCommand import *
+import ConfigParser
+
+class TProbCommandProps:
+    def __init__(self, name="DefaultCommand", prob=1.0, wnum=[-1]):
+        self.Prob = prob
+        self.Name = name
+        self.CmdTokensNumList = wnum
+    def __str__(self):
+        return "Prob = "+str(self.Prob)+", "+str(self.Name)+", "+str(self.CmdTokensNumList)
 
 class TCommandCreator:
-    def __init__(self):
-        """put fields here"""
+    ProjectBaseDir = ""
+    @classmethod
+    def Init(self, projectBaseDir=""):
+        self.ProjectBaseDir = projectBaseDir
 
-    def __call__(self):
-        """put default action here"""
-
-    @staticmethod
-    def CreateNewCommonCommand(name="NoCommand", prob=1.0, wnum=-1, sourceCmd=None):
+    @classmethod
+    def CreateNewCommand(self, probCmd, sourceCmd=None):
         newCmd = TCommand()
-        if sourceCmd != None:
-            newCmd = copy.deepcopy(sourceCmd)
-            newCmd.Prob = prob
-            if len(sourceCmd.LexemsList) > 0:
-                if (wnum > -1) and (wnum <  len(sourceCmd.LexemsList)):
-                    newCmd.CommandLexems = sourceCmd.LexemsList[wnum]
-                newCmd.RequestLexems = [sourceCmd.LexemsList[i] for i in xrange(len(sourceCmd.LexemsList)) if i != wnum ]
-        newCmd.CmdType = TCommandType[name]
+        newCmd = copy.deepcopy(sourceCmd)
+        newCmd.Prob = probCmd.Prob
+        # returns new command object
+        newCmd.CmdType = probCmd.Name
+        if newCmd.CmdType not in TCommandType:
+            print >> sys.stderr, "No such command" + probCmd.Name + ". DefaultCommand set."
+            newCmd.CmdType = "DefaultCommand"
+        # create Exec Object for operation
+        cmdProps = TCommandType[newCmd.CmdType]
+        try:
+            # cmdProps["OperationType"] is type
+            newCmd.CmdExecObj = cmdProps["OperationType"](newCmd.CmdType)
+        except:
+            raise Exception("No such class " + str(cmdProps["OperationType"]))
+        
+        newCmd.CmdExecObj.Name = newCmd.CmdType
+        newCmd.CmdExecObj.ModuleRelPath = cmdProps.get("ModuleRelPath", "")
+
+        # TODO: set Preparer class instead of following operation
+        if len(sourceCmd.LexemsList) > 0:
+            newCmd.CommandLexems = [sourceCmd.LexemsList[wnum] \
+                    for wnum in probCmd.CmdTokensNumList \
+                    if ((wnum > -1) and (wnum < len(sourceCmd.LexemsList)))]
+
+            newCmd.RequestLexems = [sourceCmd.LexemsList[i] \
+                    for i in xrange(len(sourceCmd.LexemsList)) \
+                    if i not in probCmd.CmdTokensNumList ]
+
         return newCmd
 
-    @staticmethod
-    def CreateNewCommand(name="NoCommand", prob=1.0, wnum=-1, sourceCmd=None):
-        # returns new command object
-        newCmd = None
-        if name == "NoCommand":
-            newCmd = TCommandCreator.CreateNewCommonCommand(name, prob, wnum, sourceCmd)
-        elif name == "Search":
-            newCmd = TCommandCreator.CreateNewCommonCommand(name, prob, wnum, sourceCmd)
-        elif name == "Wiki":
-            newCmd = TCommandCreator.CreateNewCommonCommand(name, prob, wnum, sourceCmd)
-        elif name == "News":
-            newCmd = TCommandCreator.CreateNewCommonCommand(name, prob, wnum, sourceCmd)
-        elif name == "Weather":
-            newCmd = TCommandCreator.CreateNewCommonCommand(name, prob, wnum, sourceCmd)
-        elif name == "ExternalDevice":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        elif name == "Notify":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        elif name == "ChatBotReply":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        elif name == "DontUnderstand":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        elif name == "RequestMoreInfo":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        elif name == "StopCurrentCmd":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        elif name == "RememberContext":
-            raise Exception(" TCommandCreator: command not implemented: "+name)
-        else:
-            raise Exception(" TCommandCreator: unknown command: "+name)
-        return newCmd
+

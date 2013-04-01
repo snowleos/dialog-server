@@ -6,7 +6,6 @@ import json
 import subprocess
 sys.path.append("../..")
 import dialog_server
-from dialog_server.command_matcher.TCommandType import *
 
 class TCommand:
     def __init__(self):
@@ -16,7 +15,7 @@ class TCommand:
 
         self.LexemsList = list() # to refactor
         self.CmdExecObj = None
-        self.CmdType = TCommandType["NoCommand"] # to refactor
+        self.CmdType = ""
         # split all lexems to types: Command and Request
         self.CommandLexems = list()
         self.RequestLexems = list()
@@ -27,8 +26,7 @@ class TCommand:
         self.DebugText = ""
 
     def __call__(self):
-        self.CmdExecObj = self.CmdType.GetExecObj()
-        self.ExecStatus, self.ResultText, self.DebugText = self.CmdExecObj(self.RequestLexems)
+        self.ExecStatus, self.ResultText, self.DebugText = self.CmdExecObj(self)
 
     def Read(self, line):
         jsonObj = json.loads(line)

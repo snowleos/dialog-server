@@ -4,31 +4,43 @@ import os
 import re
 import copy
 import subprocess
+import weakref
 sys.path.append("../..")
 import dialog_server
+import common_lib.common_ops as common_ops
+from dialog_server.command.TCommandCreator import *
 from dialog_server.command_matcher.TCommandType import *
-from dialog_server.classifier.TBayesClassifier import *
-from dialog_server.classifier.TExactClassifier import *
 
 class TCommandMatcher:
     def __init__(self):
+        self.ClassifiersList = list()
         """put fields here"""
 
-    def FindMostProbCommands(self, probCommandsList, commandsToExecList):
-        if len(probCommandsList) != 0:
-            mostProbCmd = probCommandsList[0]
-            maxProb = probCommandsList[0].Prob
-            for i in xrange(1, len(probCommandsList)):
-                if probCommandsList[i].Prob > maxProb:
-                    maxProb = probCommandsList[i].Prob
-                    mostProbCmd = probCommandsList[i]
-            commandsToExecList.append(copy.copy(mostProbCmd))
-            print commandsToExecList[0].CmdType.Name
+    def FindMostProbCommands(self, command, classifiersOutList, commandsToExecList):
+        mostProbCmd = None
+        maxProb = -1
+        for i in xrange(len(classifiersOutList)):
+            for k in classifiersOutList[i].keys():
+                if classifiersOutList[i][k].Prob > maxProb:
+                    maxProb = classifiersOutList[i][k].Prob
+                    mostProbCmd = weakref.ref(classifiersOutList[i][k])
+
+        commandsToExecList.append(TCommandCreator.CreateNewCommand(mostProbCmd(), command))
+        print commandsToExecList[0].CmdType
 
     def __call__(self, command, commandsToExecList):
-        # got command with splitted words
-        probCommandsList = list()
-        cmdClassifier = TExactClassifier()
-        cmdClassifier(command, probCommandsList)
-        self.FindMostProbCommands(probCommandsList, commandsToExecList)
-        print commandsToExecList[0].CmdType.Name
+        classifiersOutList = list()
+        print >> sys.stderr, "CLASSIFY COMMAND:"
+        for ft, cl in self.ClassifiersList:
+            if ft != None:
+                ft(command)
+            classifiersOutList.append(dict())
+            cl(command, classifiersOutList[-1])
+            for prob in classifiersOutList[-1].values():
+                print prob
+
+        self.FindMostProbCommands(command, classifiersOutList, commandsToExecList)
+
+        # NOTE: now we return only one most prob command
+        # among found by all classifiers
+        print commandsToExecList[0].CmdType

@@ -23,7 +23,6 @@ command = TCommand()
 
 
 # make preprocessed commands
-"""
 FCMD = open("test_phrases.txt", "r")
 FSERCMD = open("preproc_cmds.txt", "w")
 for line in FCMD:
@@ -34,7 +33,6 @@ for line in FCMD:
     outStr = command.Write()
     FSERCMD.write(outStr+"\n")
 FSERCMD.close()
-"""
 
 # test json serializing
 """
@@ -47,6 +45,7 @@ for line in FSERCMD:
 """
 
 # TestFeatureExtractor
+"""
 extr = TBayesFeatureExtractor()
 FSERCMD = open("preproc_cmds.txt", "r")
 for line in FSERCMD:
@@ -54,3 +53,4 @@ for line in FSERCMD:
     extr(command)
     print ""
 
+"""

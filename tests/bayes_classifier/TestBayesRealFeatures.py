@@ -27,7 +27,7 @@ ModelIO = TModelIO()
 ModelIO.Write("bayes_model_real_features.txt", None, [bayesClassifier.Model])
 print "Modified", bayesClassifier.Model.Modified
 
-probCommandsDict = defaultdict(lambda:0)
+probCommandsDict = defaultdict(lambda:None)
 
 # init all main objects
 parser = TParser(\
@@ -41,7 +41,8 @@ for line in [u'читай википедию', u'скока градусов н�
     print line
     extr(command)
     print 'CmdType: ', bayesClassifier.Classify(command, probCommandsDict)
-    print probCommandsDict
+    for prob in probCommandsDict.values():
+        print prob
 
 # test on same data :)
 """

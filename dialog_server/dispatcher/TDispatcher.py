@@ -31,5 +31,6 @@ class TDispatcher:
         self.CommandMatcher(command, commandsToExecList)
 
         for execCommand in commandsToExecList:
+            print "CmdType:", execCommand.CmdType
             execCommand()
             self.SendResult(execCommand)

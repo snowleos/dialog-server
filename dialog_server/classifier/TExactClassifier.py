@@ -10,33 +10,23 @@ from dialog_server.command.TCommandCreator import *
 from dialog_server.classifier.TBaseClassifier import *
 
 class TExactClassifier(TBaseClassifier):
-    Epsilon = 0.00000000001
     def __init__(self):
-        """put fields here"""
+        
+        self.Model = {
+                u"википедия": "Wiki",
+                u"погода": "Weather",
+                u"новости": "News",
+                u"поиск": "Search"
+                };
 
-    def NormProbList(self, probCommandsList):
-        probSum = 0.0
-        for i in xrange(len(probCommandsList)):
-            probSum += probCommandsList[i].Prob
-        if (probSum - 0.0) > self.Epsilon:
-            for i in xrange(len(probCommandsList)):
-                probCommandsList[i].Prob = probCommandsList[i].Prob / probSum
-
-    def __call__(self, command, probCommandsList):
+    def Classify(self, command, probCommandsDict):
         print " ".join(command.LexemsList).encode("utf-8")
         for wnum in xrange(len(command.LexemsList)):
-            if command.LexemsList[wnum] == u"википедия":
-                probCommandsList.append(TCommandCreator.CreateNewCommand(\
-                        name="Wiki", prob=1.0, wnum=wnum, sourceCmd=command))
-            elif command.LexemsList[wnum] == u"погода":
-                probCommandsList.append(TCommandCreator.CreateNewCommand(\
-                        name="Weather", prob=1.0, wnum=wnum, sourceCmd=command))
-            elif command.LexemsList[wnum] == u"новости":
-                probCommandsList.append(TCommandCreator.CreateNewCommand(\
-                        name="News", prob=1.0, wnum=wnum, sourceCmd=command))
-            elif command.LexemsList[wnum] == u"поиск":
-                probCommandsList.append(TCommandCreator.CreateNewCommand(\
-                        name="Search", prob=1.0, wnum=wnum, sourceCmd=command))
+            if command.LexemsList[wnum] in self.Model:
+                _name=self.Model[command.LexemsList[wnum]]
+                probCommandsDict[_name] = TProbCommandProps(\
+                        name=_name, \
+                        prob=1.0, wnum=[wnum])
 
-        self.NormProbList(probCommandsList)
+        self.NormProbList(probCommandsDict)
 

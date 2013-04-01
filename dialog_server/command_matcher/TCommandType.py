@@ -4,6 +4,7 @@ sys.path.append("../..")
 from dialog_server.exec_objects.TExecObjectSpecify import *
 from dialog_server.exec_objects.TExecObjectOperation import *
 from dialog_server.exec_objects.TExecObjectMetaCommand import *
+from dialog_server.exec_objects.TExecObjectStub import *
 
 class TCommandTypeProps:
     def __init__(self, name, execObjType):
@@ -15,18 +16,70 @@ class TCommandTypeProps:
         self.ExecObj = self.ExecObjType(self.Name)
         return self.ExecObj
 
-TCommandType = {
-    "NoCommand":        TCommandTypeProps("NoCommand",      TExecObjectMetaCommand),
-    "Search":           TCommandTypeProps("Search",         TExecObjectOperation),
-    "Wiki":             TCommandTypeProps("Wiki",           TExecObjectOperation),
-    "News":             TCommandTypeProps("News",           TExecObjectOperation),
-    "Weather":          TCommandTypeProps("Weather",        TExecObjectOperation),
-    "ExternalDevice":   TCommandTypeProps("ExternalDevice", TExecObjectOperation),
-    "Notify":           TCommandTypeProps("Notify",         TExecObjectOperation),
-    "ChatBotReply":     TCommandTypeProps("ChatBotReply",   TExecObjectOperation),
-    "DontUnderstand":   TCommandTypeProps("DontUnderstand", TExecObjectSpecify),
-    "RequestMoreInfo":  TCommandTypeProps("RequestMoreInfo",TExecObjectSpecify),
-    "StopCurrentCmd":   TCommandTypeProps("StopCurrentCmd", TExecObjectMetaCommand),
-    "RememberContext":  TCommandTypeProps("RememberContext",TExecObjectMetaCommand)
-    }
+#   "ExampleOperation": {
+#       "OperationType": <type of operation>,
+#       "ContextType": <type of context that uses such operation>,
+#                   e.g. if context was "common" and operation has "specific" then
+#                   context would be switched to "specific"
+#       "ModuleRelPath": <external module if command is TExecObjectOperation>,
+#       "AdditionalLogicClass": <here may be set additional handler class>,
+#                   e.g. class that preapares input for exec object
+#       "OnErrorOperation": <what to do if error>,
+#       "OnResultOperation": <what to do if further result processing needed>
+#   }
 
+TCommandType = {
+    "NoCommand": {
+        "OperationType": TExecObjectStub,
+        "ModuleRelPath": "../modules/search.py"
+        },
+
+    "DefaultCommand": {
+        #same as Search. If don't know whatta do, search it at Yandex!
+        "OperationType": TExecObjectStub,
+        "ModuleRelPath": "../modules/search.py "
+        },
+
+    "Search": {
+        "OperationType": TExecObjectOperation,
+        "ModuleRelPath": "../modules/search.py "
+        },
+
+    "SearchQuestion": {
+        # http://wiki.yandex-team.ru/AleksandrSibirjakov/VoprositelnyeZaprosy
+        "OperationType": TExecObjectOperation,
+        "ModuleRelPath": "../modules/search.py "
+        },
+
+    "Wiki": {
+        "OperationType": TExecObjectOperation ,
+        "ModuleRelPath": "../modules/wikipedia.py"
+        },
+
+    "News": {
+        "OperationType": TExecObjectOperation,
+        "ModuleRelPath": "../modules/news.py"
+        },
+
+    "Weather": {
+        "OperationType": TExecObjectOperation,
+        "ModuleRelPath": "../modules/weather.py"
+        },
+
+    "ExternalDevice": {
+        "OperationType": TExecObjectStub,
+        "ModuleRelPath": " "
+        },
+
+    "MakeCoffee": {
+        "OperationType": TExecObjectStub,
+        "ModuleRelPath": " "
+        },
+
+    #"Notify"
+    #"ChatBotReply"
+    #"DontUnderstand"
+    #"RequestMoreInfo"
+    #"StopCurrentCmd"
+    #"RememberContext"
+    }

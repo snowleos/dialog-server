@@ -16,14 +16,34 @@ from dialog_server.classifier.TBayesModel import *
 from dialog_server.classifier.TBayesFeatureExtractor import *
 
 class TBayesClassifier(TBaseClassifier):
-    Epsilon = 0.00000000001
-    def __init__(self):
+    def __init__(self, confPath=""):
+        TBaseClassifier.__init__(self, confPath)
         self.Model = None #TBayesModel()
+        self.ModelType = TBayesModel
         self.FeatureExtractor = TBayesFeatureExtractor()
 
-    def __call__(self, command, probCommandsDict):
-        self.Classify(command, probCommandsDict)
+    def Classify(self, command, probCommandsDict):
+        maxCl = ""
+        maxClProb = -1
+        for cl in self.Model.Classes.keys():
+            sumClassFeatures = 0
+            clProbDict = self.Model.FeatureProbs.get(cl, None)
+            if clProbDict != None:
+                for feat in command.Features:
+                    sumClassFeatures += -log(clProbDict.get(feat, 10**(-7)))
+            # make probaabilities from sum logs
+            # TODO: make recognition of words, most specific to chosen command
+            if not self.Equals(sumClassFeatures, 0.0):
+                sumClassFeatures = 1/sumClassFeatures
+            probCommandsDict[cl] = TProbCommandProps(\
+                    name=cl, prob=sumClassFeatures, wnum=[])
+            if sumClassFeatures > maxClProb:
+                maxClProb = sumClassFeatures
+                maxCl = cl
+        self.NormProbList(probCommandsDict)
+        return maxCl
 
+    """
     def Classify(self, command, probCommandsDict):
         minCl = ""
         minClProb = 100000000
@@ -38,6 +58,7 @@ class TBayesClassifier(TBaseClassifier):
                 minClProb = sumClassFeatures
                 minCl = cl
         return minCl
+    """
 
     def StartLearn(self):
         self.Model = TBayesModel()
@@ -56,9 +77,5 @@ class TBayesClassifier(TBaseClassifier):
             self.Model.Classes[cl] /= sum(self.Model.ClassSamplesCount.values())
         
 
-    def SaveModel(self):
-        print >> sys.stderr, "SaveModel() not implemented"
-    def LoadModel(self):
-        print >> sys.stderr, "LoadModel() not implemented"
-
-
+    #def SaveModel(self): implemented in base class
+    #def LoadModel(self): implemented in base class

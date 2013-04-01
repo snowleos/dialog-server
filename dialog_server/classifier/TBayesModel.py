@@ -22,7 +22,7 @@ class TBayesModel(TBaseModel):
         self.Classes = jsonObj["Classes"]
         self.FeatureProbs = jsonObj["FeatureProbs"]
         self.ClassSamplesCount = jsonObj["ClassSamplesCount"]
-        print self.FeatureProbs
+        #print self.FeatureProbs
 
     # returns JSON string
     def Write(self):
@@ -32,5 +32,5 @@ class TBayesModel(TBaseModel):
             "FeatureProbs": self.FeatureProbs,
             "ClassSamplesCount": self.ClassSamplesCount
             })
-        print self.BinData
+        #print self.BinData
         return self.BinData
