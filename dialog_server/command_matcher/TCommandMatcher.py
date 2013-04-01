@@ -19,11 +19,28 @@ class TCommandMatcher:
     def FindMostProbCommands(self, command, classifiersOutList, commandsToExecList):
         mostProbCmd = None
         maxProb = -1
+        probsCnt = 0
+        probsSum = 0.0
         for i in xrange(len(classifiersOutList)):
             for k in classifiersOutList[i].keys():
+                probsCnt += 1
+                probsSum += classifiersOutList[i][k].Prob
                 if classifiersOutList[i][k].Prob > maxProb:
                     maxProb = classifiersOutList[i][k].Prob
                     mostProbCmd = weakref.ref(classifiersOutList[i][k])
+
+        # find average prob
+        probAvg = 0.0
+        if probsCnt != 0:
+            probAvg = probsSum / probsCnt
+            # check mostProbCmd. if it differs less than 15% of average
+            # then set it as DefaultCommand
+            if ((mostProbCmd().Prob - probAvg) / probAvg) < 0.15:
+                mostProbCmd().Name = "DefaultCommand"
+                print >> sys.stderr, "TCommandMatcher:\n" + \
+                        "(mostProbCmd().Prob - probAvg) / probAvg) < 0.15\n"+ \
+                        "("+str(mostProbCmd().Prob)+" - "+str(probAvg)+") / "+str(probAvg)+") = "+ \
+                        str((mostProbCmd().Prob - probAvg) / probAvg) + "< 0.15"
 
         commandsToExecList.append(TCommandCreator.CreateNewCommand(mostProbCmd(), command))
         print commandsToExecList[0].CmdType
