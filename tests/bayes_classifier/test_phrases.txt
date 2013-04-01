@@ -36,3 +36,68 @@ Wiki	что такое теория обработки сигналов
 Wiki	посмотри значение
 Wiki	глянь определение
 Wiki	что называют
+Wiki	кто такой Уго Чавес
+Search	найди телефон
+Search	где офис Яндекса
+Search	новый альбом скачать бесплатно
+Search	приложение на телефон
+Search	официальный сайт
+Search	вконтакте
+Search	порно онлайн
+Search	найди в интернете
+Search	глянь в поиске
+Search	что пишут про
+Search	скачать фильм
+SearchQuestion	что такое
+SearchQuestion	где купить
+SearchQuestion	как сделать
+SearchQuestion	как правильно
+SearchQuestion	что это
+SearchQuestion	где найти
+SearchQuestion	где скачать
+SearchQuestion	что делать
+SearchQuestion	что означает
+SearchQuestion	что значит
+SearchQuestion	где косметика
+SearchQuestion	какой лучше
+SearchQuestion	какой выбрать
+SearchQuestion	чем открыть
+SearchQuestion	что подарить
+SearchQuestion	какой купить
+SearchQuestion	чем отличаются
+SearchQuestion	где москва
+SearchQuestion	какие бывают
+SearchQuestion	какая лучше
+SearchQuestion	о чём
+SearchQuestion	куда поехать
+SearchQuestion	вреден ли
+SearchQuestion	кто родиться
+SearchQuestion	каким цветом
+SearchQuestion	сколько варить
+SearchQuestion	куда вкладывать
+SearchQuestion	когда сажать
+SearchQuestion	куда деньги
+SearchQuestion	полезен ли
+SearchQuestion	можно ли
+ExternalDevice	зажги свет
+ExternalDevice	выключи свет
+ExternalDevice	отруби лампочку
+ExternalDevice	сделай светлее
+ExternalDevice	свет
+ExternalDevice	включить
+ExternalDevice	выключатель
+ExternalDevice	поярче
+ExternalDevice	темнее
+ExternalDevice	врубай уже свет
+ExternalDevice	освещение
+MakeCoffee	сделай мне кофе
+MakeCoffee	можно кофейку
+MakeCoffee	замути кофе со сливками
+MakeCoffee	кофе капучино три ложки сахара с молоком
+MakeCoffee	хочу кофе
+MakeCoffee	чашку кофе без молока
+MakeCoffee	ублажи кофемана ядреным напитком
+MakeCoffee	завари кофе чтоб штырило
+MakeCoffee	двойной американо
+MakeCoffee	латте без сахара
+MakeCoffee	хочу выпить чего-нибудь бодрящее
