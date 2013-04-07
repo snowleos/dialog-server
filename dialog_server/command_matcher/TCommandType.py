@@ -109,6 +109,61 @@ TCommandType = {
 
         },
 
+    "ChatBot": {
+        "OperationType": TExecObjectStub,
+        "Description": "поболтать"
+        },
+
+    "MakeTea": {
+        "OperationType": TExecObjectStub,
+        "Description": "сделать чай"
+        },
+
+    "NavigationOffice": {
+        "OperationType": TExecObjectStub,
+        "Description": "найти на карте офиса"
+        },
+
+    "OrderPizza": {
+        "OperationType": TExecObjectStub,
+        "Description": "заказать пиццу"
+        },
+
+    "Probki": {
+        "OperationType": TExecObjectStub,
+        "Description": "узнать про пробки"
+        },
+
+    "ScheduleMeeting": {
+        "OperationType": TExecObjectStub,
+        "Description": "назначить встречу"
+        },
+
+    "SearchStaff": {
+        "OperationType": TExecObjectStub,
+        "Description": "найти на стаффе"
+        },
+
+    "ShowMenu": {
+        "OperationType": TExecObjectStub,
+        "Description": "узнать меню в столовой"
+        },
+
+    "Translate": {
+        "OperationType": TExecObjectStub,
+        "Description": "перевод"
+        },
+
+    "YandexMarket": {
+        "OperationType": TExecObjectStub,
+        "Description": "найти на Яндекс.Маркете"
+        },
+
+    "YandexTaxi": {
+        "OperationType": TExecObjectStub,
+        "Description": "вызвать такси"
+        }
+
     #"Notify"
     #"ChatBotReply"
     #"DontUnderstand"

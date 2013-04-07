@@ -48,37 +48,37 @@ Search	найди в интернете
 Search	глянь в поиске
 Search	что пишут про
 Search	скачать фильм
-SearchQuestion	что такое
-SearchQuestion	где купить
-SearchQuestion	как сделать
-SearchQuestion	как правильно
-SearchQuestion	что это
-SearchQuestion	где найти
-SearchQuestion	где скачать
-SearchQuestion	что делать
-SearchQuestion	что означает
-SearchQuestion	что значит
-SearchQuestion	где косметика
-SearchQuestion	какой лучше
-SearchQuestion	какой выбрать
-SearchQuestion	чем открыть
-SearchQuestion	что подарить
-SearchQuestion	какой купить
-SearchQuestion	чем отличаются
-SearchQuestion	где москва
-SearchQuestion	какие бывают
-SearchQuestion	какая лучше
-SearchQuestion	о чём
-SearchQuestion	куда поехать
-SearchQuestion	вреден ли
-SearchQuestion	кто родиться
-SearchQuestion	каким цветом
-SearchQuestion	сколько варить
-SearchQuestion	куда вкладывать
-SearchQuestion	когда сажать
-SearchQuestion	куда деньги
-SearchQuestion	полезен ли
-SearchQuestion	можно ли
+SearchQuestion	что такое менструация
+SearchQuestion	где купить пачку носков
+SearchQuestion	как сделать суп печенье
+SearchQuestion	как правильно вести себя на людях
+SearchQuestion	что это такое
+SearchQuestion	где найти клад
+SearchQuestion	где скачать новое кино
+SearchQuestion	что делать если хочется спать
+SearchQuestion	что означает понятие композиция
+SearchQuestion	что значит быть крутым
+SearchQuestion	где косметика самая лучшая
+SearchQuestion	какой лучше прочитать приключенческий роман
+SearchQuestion	какой выбрать тур для отдыха
+SearchQuestion	чем открыть файл
+SearchQuestion	что подарить маме на день рождения
+SearchQuestion	какой купить бюстгалтер подруге
+SearchQuestion	чем отличаются фистинг от леггинга
+SearchQuestion	где москва можно интересно погулять
+SearchQuestion	какие бывают разновидности рецепт
+SearchQuestion	какая лучше сумка на весну
+SearchQuestion	о чём говорят мужчины
+SearchQuestion	куда поехать отдыхать на майские
+SearchQuestion	вреден ли жир и холестерин
+SearchQuestion	кто родиться в этом году
+SearchQuestion	каким цветом красить забор и калитку
+SearchQuestion	сколько варить овощи для блюда
+SearchQuestion	куда вкладывать лишние деньги
+SearchQuestion	когда сажать огурцы или помидоры
+SearchQuestion	куда деньги тратятся за месяц
+SearchQuestion	полезен ли зеленый чай
+SearchQuestion	можно ли задать вопрос голосом
 ExternalDevice	зажги свет
 ExternalDevice	выключи свет
 ExternalDevice	отруби лампочку
