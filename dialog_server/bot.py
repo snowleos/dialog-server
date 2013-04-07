@@ -13,6 +13,7 @@ from dialog_server.exec_objects.TExecObjectBase import *
 import common_lib.common_ops as common_ops
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
 import dialog_server.command_matcher.TParser as TParser
+from dialog_server.command_matcher.TCommandType import *
 
 PROJECT_BASE_DIR = common_ops.GetProjectBaseDir()
 print PROJECT_BASE_DIR
@@ -50,7 +51,8 @@ class YHBot(JabberBot):
         commandsToExecList = list()
         self.cmdMatcher(command, commandsToExecList)
 
-        result = ("CmdType: %s" % execCommand.CmdType for execCommand in commandsToExecList)
+        #result = ("CmdType: %s" % execCommand.CmdType for execCommand in commandsToExecList)
+        result = ("CmdType: %s" % GetCommandProperty(execCommand.CmdType, "Description").decode("utf-8") for execCommand in commandsToExecList)
         return u'Распознанные типы команд:\n%s' % '\n'.join(result)
 
 

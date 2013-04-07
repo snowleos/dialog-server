@@ -16,6 +16,19 @@ class TCommandTypeProps:
         self.ExecObj = self.ExecObjType(self.Name)
         return self.ExecObj
 
+def GetCommandProperty(cmdType, propName):
+    cmdProps = TCommandType.get(cmdType, TCommandType["DefaultCommand"])
+    defaultProps = TCommandType["DefaultCommand"]
+    if propName in cmdProps:
+        return cmdProps[propName]
+    else:
+        if propName in defaultProps:
+            return defaultProps[propName]
+        else:
+            raise Exception("No such property: " + propName)
+
+
+
 #   "ExampleOperation": {
 #       "OperationType": <type of operation>,
 #       "ContextType": TODO <type of context that uses such operation>,
