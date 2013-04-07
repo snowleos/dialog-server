@@ -25,6 +25,16 @@ class TCommandCreator:
         self.ProjectBaseDir = projectBaseDir
 
     @classmethod
+    def GetProperty(self, cmdProps, defaultProps, propName):
+        if propName in cmdProps:
+            return cmdProps[propName]
+        else:
+            if propName in defaultProps:
+                return defaultProps[propName]
+            else:
+                raise Exception("No such property: " + propName)
+
+    @classmethod
     def CreateNewCommand(self, probCmd, sourceCmd=None):
         newCmd = TCommand()
         newCmd = copy.deepcopy(sourceCmd)
@@ -36,14 +46,18 @@ class TCommandCreator:
             newCmd.CmdType = "DefaultCommand"
         # create Exec Object for operation
         cmdProps = TCommandType[newCmd.CmdType]
+        defaultProps = TCommandType["DefaultCommand"]
+        operationType = self.GetProperty(cmdProps, defaultProps, "OperationType")
         try:
             # cmdProps["OperationType"] is type
-            newCmd.CmdExecObj = cmdProps["OperationType"](newCmd.CmdType)
+            newCmd.CmdExecObj = operationType(newCmd.CmdType)
         except:
-            raise Exception("No such class " + str(cmdProps["OperationType"]))
+            raise Exception("No such class " + str(operationType))
         
         newCmd.CmdExecObj.Name = newCmd.CmdType
-        newCmd.CmdExecObj.ModuleRelPath = cmdProps.get("ModuleRelPath", "")
+        newCmd.CmdExecObj.ModuleRelPath = self.GetProperty(cmdProps, defaultProps, "ModuleRelPath")
+        newCmd.RequestFields = self.GetProperty(cmdProps, defaultProps, "RequestFields")
+        print "RequestFields", newCmd.RequestFields
 
         # TODO: set Preparer class instead of following operation
         if len(sourceCmd.LexemsList) > 0:

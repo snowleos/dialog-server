@@ -30,8 +30,9 @@ class TBayesClassifier(TBaseClassifier):
             clProbDict = self.Model.FeatureProbs.get(cl, None)
             if clProbDict != None:
                 for feat in command.Features:
-                    sumClassFeatures += -log(clProbDict.get(feat, 10**(-7)))
-            # make probaabilities from sum logs
+                    featProb = clProbDict.get(feat, 10**(-7))
+                    sumClassFeatures += -log(featProb)
+            # make probabilities from sum logs
             # TODO: make recognition of words, most specific to chosen command
             if not self.Equals(sumClassFeatures, 0.0):
                 sumClassFeatures = 1/sumClassFeatures

@@ -18,6 +18,7 @@ class TCommand:
         self.CmdType = ""
         # split all lexems to types: Command and Request
         self.CommandLexems = list()
+        self.RequestFields = dict()
         self.RequestLexems = list()
         self.Prob = 0.0
         # result
@@ -38,6 +39,7 @@ class TCommand:
         self.CmdType = jsonObj["CmdType"]
         self.CommandLexems = jsonObj["CommandLexems"]
         self.RequestLexems = jsonObj["RequestLexems"]
+        self.RequestFields = jsonObj["RequestFields"]
         self.Prob = float(jsonObj["Prob"])
         self.ExecStatus = int(jsonObj["ExecStatus"])
         self.ResultText = jsonObj["ResultText"]
@@ -54,6 +56,7 @@ class TCommand:
             "CmdType": self.CmdType,
             "CommandLexems": self.CommandLexems,
             "RequestLexems": self.RequestLexems,
+            "RequestFields": self.RequestFields,
             "Prob": self.Prob,
             "ExecStatus": self.ExecStatus,
             "ResultText": self.ResultText,

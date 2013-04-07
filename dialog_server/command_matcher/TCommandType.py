@@ -18,62 +18,95 @@ class TCommandTypeProps:
 
 #   "ExampleOperation": {
 #       "OperationType": <type of operation>,
-#       "ContextType": <type of context that uses such operation>,
+#       "ContextType": TODO <type of context that uses such operation>,
 #                   e.g. if context was "common" and operation has "specific" then
 #                   context would be switched to "specific"
 #       "ModuleRelPath": <external module if command is TExecObjectOperation>,
-#       "AdditionalLogicClass": <here may be set additional handler class>,
+#       "AdditionalLogicClass": TODO <here may be set additional handler class>,
 #                   e.g. class that preapares input for exec object
-#       "OnErrorOperation": <what to do if error>,
-#       "OnResultOperation": <what to do if further result processing needed>
+#       "OnErrorOperation": TODO <what to do if error>,
+#       "OnResultOperation": TODO <what to do if further result processing needed>,
+#       "Description": <what operation means e.g. искать на поиске>,
+#       "Priority": TODO <if we recognized several commands what to do first>,
+#       "RequestFields": TODO <словарь полей запроса ключ:пор_номер значение:название_поля>
 #   }
 
 TCommandType = {
     "NoCommand": {
         "OperationType": TExecObjectStub,
-        "ModuleRelPath": "../modules/search.py"
+        "ModuleRelPath": "../modules/search.py",
+        "Description":   "ничего не делать"
         },
 
     "DefaultCommand": {
         #same as Search. If don't know whatta do, search it at Yandex!
         "OperationType": TExecObjectStub,
-        "ModuleRelPath": "../modules/search.py "
+        "ContextType": "common",
+        "ModuleRelPath": "../modules/search.py ",
+        "AdditionalLogicClass": None,
+        "OnResultOperation": "",
+        "Description":   "сделать, что обычно",
+        "Priority": 0,
+        "RequestFields": {"0": "CommandText", "1": "Query"}
         },
 
     "Search": {
         "OperationType": TExecObjectOperation,
-        "ModuleRelPath": "../modules/search.py "
+        "ModuleRelPath": "../modules/search.py ",
+        "Description":   "найти в поиске"
+
         },
 
     "SearchQuestion": {
         # http://wiki.yandex-team.ru/AleksandrSibirjakov/VoprositelnyeZaprosy
         "OperationType": TExecObjectOperation,
-        "ModuleRelPath": "../modules/search.py "
+        "ModuleRelPath": "../modules/search.py ",
+        "Description":   "найти в ответах"
+
         },
 
     "Wiki": {
         "OperationType": TExecObjectOperation ,
-        "ModuleRelPath": "../modules/wikipedia.py"
+        "ModuleRelPath": "../modules/wikipedia.py",
+        "Description":   "найти в википедии"
+
         },
 
     "News": {
         "OperationType": TExecObjectOperation,
-        "ModuleRelPath": "../modules/news.py"
+        "ModuleRelPath": "../modules/news.py",
+        "Description":   "прочитать новости"
+
         },
 
     "Weather": {
         "OperationType": TExecObjectOperation,
-        "ModuleRelPath": "../modules/weather.py"
+        "ModuleRelPath": "../modules/weather.py",
+        "Description":   "узнать погоду"
+
         },
 
     "ExternalDevice": {
         "OperationType": TExecObjectStub,
-        "ModuleRelPath": " "
+        "ModuleRelPath": " ",
+        "Description":   "передать команду внешнему устройству"
+
         },
 
     "MakeCoffee": {
         "OperationType": TExecObjectStub,
-        "ModuleRelPath": " "
+        "ModuleRelPath": " ",
+        "Description":   "сделать кофе",
+        "RequestFields": {  "0": "CommandText",
+                            "1": "Volume",
+                            "2": "Hotness",
+                            "3": "Type",
+                            "4": "Sugar",
+                            "5": "Strongness",
+                            "6": "Filler",
+                            "7": "Decoration"
+                          }
+
         },
 
     #"Notify"
