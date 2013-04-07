@@ -101,3 +101,131 @@ MakeCoffee	завари кофе чтоб штырило
 MakeCoffee	двойной американо
 MakeCoffee	латте без сахара
 MakeCoffee	хочу выпить чего-нибудь бодрящее
+SearchStaff	кто такой Илья Мельников
+SearchStaff	кто такой Алексей Лавренюк
+SearchStaff	какая должность у Аркадия Воложа
+SearchStaff	кто начальник группы поиска
+SearchStaff	где рабочее место Аркадия Воложа
+SearchStaff	где сидит Илья Сегалович
+SearchStaff	кем работает Елена Бунина
+SearchStaff	чем руководит Александр Зверев
+SearchStaff	кто разработчик базового поиска
+SearchStaff	кто разработчик крипты
+SearchStaff	в офисе ли сейчас 
+SearchStaff	где находятся мои коллеги
+SearchStaff	свободен ли Логачев
+Translate	переведи мне слово монетизация
+Translate	как переводится ressurection
+Translate	что такое tower
+Translate	переведи мне слово model
+Translate	перевод фразы do not forget to buy milk
+Translate	забыл что значит слово interraction
+Translate	как перевести понятие перевод слова
+MakeTea	налей мне чай с печенками
+MakeTea	хочу кружку сладкого чаю
+MakeTea	приготовь мне зеленый чай с жасмином
+MakeTea	сделай чай две ложки сахара
+MakeTea	налей чай с молоком и без сахара
+MakeTea	чашку чая
+MakeTea	снова хочется чая сделай такой же
+MakeTea	чай
+MakeTea	еще горячего зеленого с лемоном
+MakeTea	приготовь сладкий теплый чай с лемоном
+MakeTea	чайку бы
+MakeTea	выпьем чая кружку
+ShowMenu	какое меню сегодня в столовой
+ShowMenu	что дают на обед
+ShowMenu	что сегодня в столовке
+ShowMenu	какое первое блюдо
+ShowMenu	чем кормят в столовке
+ShowMenu	какое блюдо в жан-жаке
+ShowMenu	что на второе в жон-доне
+ShowMenu	какая сегодня еда
+ShowMenu	что мне сегодня поесть
+ShowMenu	что вкусного сегодня пожрать
+ShowMenu	какая жратва в столовке внизу
+ShowMenu	что в нашей столовке на завтрак и обед
+NavigationOffice	где находится переговорка четыре стороны света
+NavigationOffice	как пройти в Мамонтов
+NavigationOffice	на каком этаже сидят разработчики Монетизации
+NavigationOffice	где ближайший кофепоинт
+NavigationOffice	где кабинет Воложа
+NavigationOffice	где комната Третьякова
+NavigationOffice	где работают маркетологи
+NavigationOffice	выведи карту офиса
+NavigationOffice	покажи схему БЦ Строганов
+NavigationOffice	какой этаж занимает почта
+NavigationOffice	как пройти к разработке мобильной
+NavigationOffice	есть сейчас свободные переговорки на этаже
+OrderPizza	закажи мне пиццу пиперрони
+OrderPizza	хочу съесть большую пиццу
+OrderPizza	можно заказать пиццу с курицей и ананасами
+OrderPizza	одну с колбасой и одну четыре сыра
+OrderPizza	закажи четыре разных пиццы
+OrderPizza	пицца в офис
+OrderPizza	пироги
+OrderPizza	пусть доставят пирожок
+OrderPizza	пусть доставят пиццу к восьми часам
+OrderPizza	хочу большую с креветками
+OrderPizza	я хочу пицу с грибами
+OrderPizza	привези мне пицу с артишоками
+ScheduleMeeting	позови на встречу Сегаловича и Воложа
+ScheduleMeeting	забей встречу в переговрке 404 на три часа
+ScheduleMeeting	запланируй встречу завтра в два
+ScheduleMeeting	создай событие сегодня в семь
+ScheduleMeeting	назначь встречу
+ScheduleMeeting	забей стрелку в полдень
+ScheduleMeeting	нужна переговорка на восемь часов
+ScheduleMeeting	сделай митинг с коллегами
+ScheduleMeeting	встреча с менеджерами
+ScheduleMeeting	собери мою команду в переговорке три икса
+ScheduleMeeting	позови всех обедать
+ScheduleMeeting	назначь переговоры
+YandexMarket	сколько стоит айфон пятый
+YandexMarket	какая цена
+YandexMarket	где купить ноутбук
+YandexMarket	лучшая цена
+YandexMarket	сравнить
+YandexMarket	лучший выбор
+YandexMarket	минимальная стоимость
+YandexMarket	как выбрать мобильный телефон
+YandexMarket	выбери мне мобильник
+YandexMarket	найти лучшее предложение
+YandexMarket	хочу купить
+YandexMarket	затариться хламом
+YandexTaxi	отвези меня домой
+YandexTaxi	забери меня с работы
+YandexTaxi	закажи такси прямо сейчас
+YandexTaxi	вызови такси через час
+YandexTaxi	нужно ехать в ресторан
+YandexTaxi	закажи тачку в аэропорт завтра в два
+YandexTaxi	транспорт из гостей и обратно 
+YandexTaxi	покатай меня по городу
+YandexTaxi	сколько доехать до центра
+YandexTaxi	отправляюсь в клуб
+YandexTaxi	вызови такси мне и ей
+YandexTaxi	едем в клуб через час
+Probki	сколько баллов пробки
+Probki	есть ли сейчас пробки
+Probki	за сколько я доеду до офиса 
+Probki	сегодня лучше на метро или на машине
+Probki	сейчас выезжать или посидеть еще часок
+Probki	свободны ли дороги
+Probki	центр стоит
+Probki	Москва красная или движется
+Probki	третье кольцо
+Probki	едет ли мкад север юг
+Probki	движется ли проспект мира в область
+Probki	как лучше ехать по трешке или по садовому
+ChatBot	привет
+ChatBot	в чем смысл жизни
+ChatBot	расскажи
+ChatBot	как тебя зовут
+ChatBot	как дела
+ChatBot	спой песенку
+ChatBot	как настроение
+ChatBot	основной вопрос жизни вселенной
+ChatBot	давай пофилософствуем
+ChatBot	поболтаем о чем-нибудь
+ChatBot	развлеки меня
+ChatBot	скажи что-нибудь прикольное

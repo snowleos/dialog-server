@@ -85,7 +85,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
                     isNoun = 0
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
                             isNoun = 1
                     cnt005 += isNoun
@@ -97,7 +97,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
                     isV = 0
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "V ":
                             isV = 1
                     cnt006 += isV
@@ -107,7 +107,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         for lexem in command.Preprocessed["Morph"]:
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
                             matchPadej = re.search("abl|acc|dat|gen|ins|loc|nom|part|voc", grammem)
                             if matchPadej != None:
@@ -119,7 +119,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         for lexem in command.Preprocessed["Morph"]:
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
                             matchPadej = re.search("abl|acc|dat|gen|ins|loc|nom|part|voc", grammem)
                             if matchPadej != None:
@@ -136,7 +136,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         for lexem in command.Preprocessed["Morph"]:
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:6] == "ADVPRO":
                             featuresList.append(u"009: " + lemma["Text"])
 
@@ -144,7 +144,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         for lexem in command.Preprocessed["Morph"]:
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "V ":
                             featuresList.append(u"010: " + lemma["Text"] + " " + grammem)
 
@@ -152,7 +152,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         for lexem in command.Preprocessed["Morph"]:
             for lemma in lexem["Lemmas"]:
                 if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma["Grammems"]:
+                    for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
                             featuresList.append(u"010: " + lemma["Text"] + " " + grammem)
 
