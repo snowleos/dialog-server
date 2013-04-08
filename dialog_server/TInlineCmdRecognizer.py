@@ -11,12 +11,12 @@ from dialog_server.command.TCommand import *
 from dialog_server.command.TCommandCreator import *
 from dialog_server.exec_objects.TExecObjectBase import *
 import common_lib.common_ops as common_ops
-import dialog_server as dialog_server
+#import dialog_server as dialog_server
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
 import dialog_server.command_matcher.TParser as TParser
-import dialog_server.dispatcher.TDispatcher as TDispatcher
-import dialog_server.http_client.THttpReply as THttpReply
-import dialog_server.http_server.THttpServer as THttpServer
+#import dialog_server.dispatcher.TDispatcher as TDispatcher
+#import dialog_server.http_client.THttpReply as THttpReply
+#import dialog_server.http_server.THttpServer as THttpServer
 
 PROJECT_BASE_DIR = common_ops.GetProjectBaseDir()
 print PROJECT_BASE_DIR
