@@ -61,28 +61,28 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         featuresList = list()
 
         #"001": "raw word",
-        for token in command.Preprocessed["Tokens"]:
+        for token in command.Preprocessed.get("Tokens", {}):
             featuresList.append(u"001: " + token["Text"])
 
         #"002": "lexem",
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma  in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma  in lexem.get("Lemmas", {}):
                 if lemma.get("Language", "none") == "ru":
-                    featuresList.append(u"002: " + lemma["Text"])
+                    featuresList.append(u"002: " + lemma.get("Text", ""))
 
         #"003": "count of words",
-        featuresList.append(u"003: " + str(len(command.Preprocessed["Tokens"])))
+        featuresList.append(u"003: " + str(len(command.Preprocessed.get("Tokens", {}))))
 
         #"004": "count of words without stop words ",
-        cnt004 = len(command.Preprocessed["Tokens"])
+        cnt004 = len(command.Preprocessed.get("Tokens", {}))
         if "StopWords" in command.Preprocessed:
             cnt004 = cnt004 - len(command.Preprocessed["StopWords"]["Tokens"])
         featuresList.append(u"004: " + str(cnt004))
 
         #"005": "count of Nouns",
         cnt005 = 0
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     isNoun = 0
                     for grammem in lemma.get("Grammems", []):
@@ -93,8 +93,8 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
 
         #"006": "count of Verbs",
         cnt006 = 0
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     isV = 0
                     for grammem in lemma.get("Grammems", []):
@@ -104,20 +104,20 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         featuresList.append(u"006: " + str(cnt006))
 
         #"007": "Noun + падеж",
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
                             matchPadej = re.search("abl|acc|dat|gen|ins|loc|nom|part|voc", grammem)
                             if matchPadej != None:
-                                featuresList.append(u"007: " + lemma["Text"] + " " + matchPadej.group(0))
+                                featuresList.append(u"007: " + lemma.get("Text", "") + " " + matchPadej.group(0))
 
         #"008": "формы глагола + падеж существительного, все со всеми",
         allVerbs = list()
         allNouns = list()
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
@@ -133,28 +133,28 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                 featuresList.append(u"008: " + v + " " + "n")
 
         #"009": "местоименное наречие ADVPRO",
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:6] == "ADVPRO":
-                            featuresList.append(u"009: " + lemma["Text"])
+                            featuresList.append(u"009: " + lemma.get("Text", ""))
 
         #"010": "Глагол + все свойства",
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "V ":
-                            featuresList.append(u"010: " + lemma["Text"] + " " + grammem)
+                            featuresList.append(u"010: " + lemma.get("Text", "") + " " + grammem)
 
         #"011": "Noun + все свойства",
-        for lexem in command.Preprocessed["Morph"]:
-            for lemma in lexem["Lemmas"]:
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "S ":
-                            featuresList.append(u"010: " + lemma["Text"] + " " + grammem)
+                            featuresList.append(u"010: " + lemma.get("Text", "") + " " + grammem)
 
         #"012": "count of Adjectives",
         #"013": "Adj + свойства ",
