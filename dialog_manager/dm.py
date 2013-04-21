@@ -21,7 +21,8 @@ def pretty_print(object):
 
 def log(comment, object):
     print comment
-    pretty_print(object)
+    if object != None:
+        pretty_print(object)
     print
 
 
@@ -33,6 +34,7 @@ commands:
     src:
     via: ''
   ScheduleMeeting:
+    CmdType: "ScheduleMeeting"
     room:
     person:
 '''
@@ -79,11 +81,17 @@ class DM(object):
             if cmd == 'Cancel':
                 self.stm = []
             elif cmd in self.ltm['commands']:
-                template = deepcopy(self.ltm['commands'][cmd])
-                template['CmdType'] = cmd
-                log("Нашли шаблон команды", template)
-                self.stm.append(template)
-                log("Переключили контекст", self.stm)
+                # проверяем что пришла НЕ та же самая команда
+                notSameCmd = True
+                if len(self.stm):
+                    if self.stm[-1].get('CmdType', None) == cmd:
+                        notSameCmd = False
+                if notSameCmd == True:
+                    template = deepcopy(self.ltm['commands'][cmd])
+                    template['CmdType'] = cmd
+                    log("Нашли шаблон команды", template)
+                    self.stm.append(template)
+                    log("Переключили контекст", self.stm)
             else:
                 self.stm = []
         if len(self.stm):
@@ -133,6 +141,7 @@ class DM(object):
             if key in DICTIONARY:
                 phrase.append(DICTIONARY[key])
 
+        log(' '.join(phrase), None)
         return ' '.join(phrase)
 
 
