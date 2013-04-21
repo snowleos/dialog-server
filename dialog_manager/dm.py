@@ -36,8 +36,7 @@ commands:
     room:
     time:
     duration:
-concepts:
-  - address
+    person:
 '''
 
 DICTIONARY = {
@@ -48,6 +47,7 @@ DICTIONARY = {
     'time': 'время',
     'duration': 'продолжительность',
     'CmdType': 'команду',
+    'person': 'список приглашенных',
 }
 
 def aggregate_facts(facts):
@@ -78,12 +78,15 @@ class DM(object):
         # если поступила команда, переключаем контекст
         cmd = facts.pop('CmdType', None)
         if cmd:
-            if cmd in self.ltm['commands']:
+            if cmd == 'Cancel':
+                self.stm = []
+            elif cmd in self.ltm['commands']:
                 template = deepcopy(self.ltm['commands'][cmd])
                 template['CmdType'] = cmd
                 log("Нашли шаблон команды", template)
                 self.stm.append(template)
                 log("Переключили контекст", self.stm)
+            else self.stm = []
         if len(self.stm):
             # дополняем фактами текущий контекст
             context = self.stm[-1]
