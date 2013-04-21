@@ -56,8 +56,8 @@ class YHBot(JabberBot):
         # extract facts
         self.factExtractor(command)
 
-        dm.supplement_context(command['FactsList'])
-        result = dm.generate_phrase(dm.execute())
+        self.dm.supplement_context(command['FactsList'])
+        result = self.dm.generate_phrase(self.dm.execute())
         log("Результат выполнения", result)
 
         #commandsToExecList = list()
