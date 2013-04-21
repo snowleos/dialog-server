@@ -84,15 +84,15 @@ class DM(object):
                 log("Нашли шаблон команды", template)
                 self.stm.append(template)
                 log("Переключили контекст", self.stm)
+        if len(self.stm):
+            # дополняем фактами текущий контекст
+            context = self.stm[-1]
+            log("Текущий контекст", context)
+            for concept in context:
+                if concept in facts:
+                    context[concept] = facts[concept]
 
-        # дополняем фактами текущий контекст
-        context = self.stm[-1]
-        log("Текущий контекст", context)
-        for concept in context:
-            if concept in facts:
-                context[concept] = facts[concept]
-
-        log("Дополнили фактами", self.stm)
+            log("Дополнили фактами", self.stm)
 
     def execute(self):
         if len(self.stm):
