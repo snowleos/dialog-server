@@ -172,9 +172,24 @@ TCommandType = {
         "Description": "найти на Яндекс.Маркете"
         },
 
-    "YandexTaxi": {
+    "Agree": {
         "OperationType": TExecObjectStub,
-        "Description": "вызвать такси"
+        "Description": "согласиться с утверждением"
+        }
+
+    "Disagree": {
+        "OperationType": TExecObjectStub,
+        "Description": "не согласиться с утверждением"
+        }
+
+    "Cancel": {
+        "OperationType": TExecObjectStub,
+        "Description": "отменить выполнение команды"
+        }
+
+    "Repeat": {
+        "OperationType": TExecObjectStub,
+        "Description": "повторить"
         }
 
     #"Notify"
