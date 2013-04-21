@@ -173,17 +173,22 @@ OrderPizza	хочу большую с креветками
 OrderPizza	я хочу пицу с грибами
 OrderPizza	привези мне пицу с артишоками
 ScheduleMeeting	позови на встречу Сегаловича и Воложа
-ScheduleMeeting	забей встречу в переговрке 404 на три часа
-ScheduleMeeting	запланируй встречу завтра в два
-ScheduleMeeting	создай событие сегодня в семь
+ScheduleMeeting	забей встречку в переговрке 404 на три часа
+ScheduleMeeting	запланируй встречку завтра в два позови Илью Мельникова и Алексея Лавренюка
+ScheduleMeeting	создай событие сегодня в семь приглашенные Татьяна Ландо
 ScheduleMeeting	назначь встречу
 ScheduleMeeting	забей стрелку в полдень
 ScheduleMeeting	нужна переговорка на восемь часов
-ScheduleMeeting	сделай митинг с коллегами
-ScheduleMeeting	встреча с менеджерами
+ScheduleMeeting	сделай митинг с коллегами Денис Филиппов Сергей Зимин и Евгений Волков
+ScheduleMeeting	встреча с менеджерами Юрием Воронцовым и Михаилом Карповым
 ScheduleMeeting	собери мою команду в переговорке три икса
 ScheduleMeeting	позови всех обедать
 ScheduleMeeting	назначь переговоры
+ScheduleMeeting	забронируй перегворочку
+ScheduleMeeting	бронь переговорки
+ScheduleMeeting	добавь встречу с Михаилом Ройзнером
+ScheduleMeeting	надо занять комнату
+ScheduleMeeting	комната для встречи и переговоров
 YandexMarket	сколько стоит айфон пятый
 YandexMarket	какая цена
 YandexMarket	где купить ноутбук
@@ -254,7 +259,7 @@ Repeat	повтори параметры
 Disagree	нет
 Disagree	не то
 Disagree	не согласен
-Disagree	не
+Disagree	нее
 Disagree	неа
 Disagree	ноу
 Disagree	не делай
