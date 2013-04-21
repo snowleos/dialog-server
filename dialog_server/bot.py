@@ -15,6 +15,7 @@ import common_lib.common_ops as common_ops
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
 import dialog_server.command_matcher.TParser as TParser
 from dialog_server.command_matcher.TCommandType import *
+from dialog_manager.dm import *
 
 PROJECT_BASE_DIR = common_ops.GetProjectBaseDir()
 print PROJECT_BASE_DIR
@@ -40,6 +41,7 @@ class YHBot(JabberBot):
         bayesClassifier.LoadModel()
         self.cmdMatcher.ClassifiersList.append((TBayesFeatureExtractor(), bayesClassifier))
         self.factExtractor = TFactExtractor(PROJECT_BASE_DIR)
+        self.dm = DM()
 
 
     @botcmd
@@ -54,12 +56,17 @@ class YHBot(JabberBot):
         # extract facts
         self.factExtractor(command)
 
-        commandsToExecList = list()
-        self.cmdMatcher(command, commandsToExecList)
+        dm.supplement_context(command['FactsList'])
+        result = dm.generate_phrase(dm.execute())
+        log("Результат выполнения", result)
+
+        #commandsToExecList = list()
+        #self.cmdMatcher(command, commandsToExecList)
 
         #result = ("CmdType: %s" % execCommand.CmdType for execCommand in commandsToExecList)
-        result = ("CmdType: %s" % GetCommandProperty(execCommand.CmdType, "Description").decode("utf-8") for execCommand in commandsToExecList)
-        return u'Распознанные типы команд:\n%s' % '\n'.join(result)
+        #result = ("CmdType: %s" % GetCommandProperty(execCommand.CmdType, "Description").decode("utf-8") for execCommand in commandsToExecList)
+        #return u'Распознанные типы команд:\n%s' % '\n'.join(result)
+        return result
 
 
 def main():

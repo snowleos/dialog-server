@@ -47,6 +47,7 @@ DICTIONARY = {
     'room': 'комнату',
     'time': 'время',
     'duration': 'продолжительность',
+    'CmdType': 'команду',
 }
 
 def aggregate_facts(facts):
@@ -75,11 +76,11 @@ class DM(object):
         facts = aggregate_facts(facts)
 
         # если поступила команда, переключаем контекст
-        cmd = facts.pop('cmd', None)
+        cmd = facts.pop('CmdType', None)
         if cmd:
             if cmd in self.ltm['commands']:
                 template = deepcopy(self.ltm['commands'][cmd])
-                template['cmd'] = cmd
+                template['CmdType'] = cmd
                 log("Нашли шаблон команды", template)
                 self.stm.append(template)
                 log("Переключили контекст", self.stm)
@@ -109,7 +110,7 @@ class DM(object):
                         context[c_key] = concept
             return {'run': context}
         else:
-            return {'ask': 'cmd'}
+            return {'ask': 'CmdType'}
 
     def try_guess(self, c_key):
         result = None
@@ -136,7 +137,7 @@ class DM(object):
 def main():
     dm = DM()
     dm.supplement_context([
-        ('cmd', 'go'),
+        ('CmdType', 'go'),
         ('dst', 'велотрек в крылатском'),
     ])
     result = dm.generate_phrase(dm.execute())
@@ -149,7 +150,7 @@ def main():
     log("Результат выполнения", result)
 
     dm.supplement_context([
-        ('cmd', 'ScheduleMeeting'),
+        ('CmdType', 'ScheduleMeeting'),
         ('room', '404'),
     ])
     result = dm.generate_phrase(dm.execute())
