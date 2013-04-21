@@ -56,12 +56,12 @@ class YHBot(JabberBot):
         # extract facts
         self.factExtractor(command)
 
+        commandsToExecList = list()
+        self.cmdMatcher(command, commandsToExecList)
+
         self.dm.supplement_context(command.FactsList)
         result = self.dm.generate_phrase(self.dm.execute())
         log("Результат выполнения", result)
-
-        #commandsToExecList = list()
-        #self.cmdMatcher(command, commandsToExecList)
 
         #result = ("CmdType: %s" % execCommand.CmdType for execCommand in commandsToExecList)
         #result = ("CmdType: %s" % GetCommandProperty(execCommand.CmdType, "Description").decode("utf-8") for execCommand in commandsToExecList)
