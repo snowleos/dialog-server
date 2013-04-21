@@ -24,6 +24,7 @@ bayesClassifier.FinishLearn()
 
 ModelIO = TModelIO()
 
+ModelIO.MoveToBackup("bayes_model_real_features.txt")
 ModelIO.Write("bayes_model_real_features.txt", None, [bayesClassifier.Model])
 print "Modified", bayesClassifier.Model.Modified
 

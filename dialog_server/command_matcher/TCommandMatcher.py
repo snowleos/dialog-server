@@ -43,7 +43,6 @@ class TCommandMatcher:
                         str((mostProbCmd().Prob - probAvg) / probAvg) + "< 0.15"
 
         commandsToExecList.append(TCommandCreator.CreateNewCommand(mostProbCmd(), command))
-        print commandsToExecList[0].CmdType
 
     def __call__(self, command, commandsToExecList):
         classifiersOutList = list()
@@ -57,6 +56,9 @@ class TCommandMatcher:
                 print prob
 
         self.FindMostProbCommands(command, classifiersOutList, commandsToExecList)
+
+        # add most prob command as a fact
+        command.FactsList.append(("CmdType", commandsToExecList[0].CmdType))
 
         # NOTE: now we return only one most prob command
         # among found by all classifiers

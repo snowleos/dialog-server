@@ -66,12 +66,12 @@ def main():
 
         # extract facts
         factExtractor(command)
-        print "FACTS:\n", command.FactsList
 
         # we could have some commands in input one
         commandsToExecList = list()
         cmdMatcher(command, commandsToExecList)
 
+        print "FACTS:\n", command.FactsList
         for execCommand in commandsToExecList:
             print "CmdType:", execCommand.CmdType
         

@@ -235,14 +235,29 @@ ChatBot	давай пофилософствуем
 ChatBot	поболтаем о чем-нибудь
 ChatBot	развлеки меня
 ChatBot	скажи что-нибудь прикольное
+Cancel	отмена
+Cancel	не продолжать
+Cancel	выключи
+Cancel	стоп
+Cancel	дальше не буду
 Cancel	отмени
 Cancel	забей
 Cancel	не нужно
 Repeat	повтори
 Repeat	не понял
 Repeat	покажи
+Repeat	что было последнее
+Repeat	выведи снова
+Repeat	заново
+Repeat	еще раз
+Repeat	повтори параметры
 Disagree	нет
 Disagree	не то
+Disagree	не согласен
+Disagree	не
+Disagree	неа
+Disagree	ноу
+Disagree	не делай
 Agree	да
 Agree	ок
 Agree	окей
@@ -250,3 +265,8 @@ Agree	хорошо
 Agree	замечательно
 Agree	одобряю
 Agree	давай
+Agree	согласен
+Agree	ага
+Agree	делай
+Agree	правильно
+Agree	йес
