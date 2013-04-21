@@ -10,6 +10,7 @@ from dialog_server.classifier.TExactClassifier import *
 from dialog_server.command.TCommand import *
 from dialog_server.command.TCommandCreator import *
 from dialog_server.exec_objects.TExecObjectBase import *
+from dialog_server.fact_extract.TFactExtractor import *
 import common_lib.common_ops as common_ops
 #import dialog_server as dialog_server
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
@@ -46,6 +47,8 @@ def main():
     bayesClassifier.LoadModel()
     cmdMatcher.ClassifiersList.append((TBayesFeatureExtractor(), bayesClassifier))
 
+    factExtractor = TFactExtractor(PROJECT_BASE_DIR)
+
     # Dispatcher, http clientt  and server are not used here
     # Instead the program listens  to  stdin, recognizes command
     # writes cmd type to stdout and lots of info to stderr
@@ -60,6 +63,11 @@ def main():
 
         command = TCommand()
         parser(command, reqString)
+
+        # extract facts
+        factExtractor(command)
+        print "FACTS:\n", command.FactsList
+
         # we could have some commands in input one
         commandsToExecList = list()
         cmdMatcher(command, commandsToExecList)

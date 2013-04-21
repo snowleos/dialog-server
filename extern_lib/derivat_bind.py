@@ -19,6 +19,7 @@ class TDerivatBind:
         proc = subprocess.Popen(["-c", cmd],
                 stdin = subprocess.PIPE,
                 stdout = subprocess.PIPE,
+                stderr = subprocess.PIPE,
                 shell=True)
         moduleInput = "\t".join([etalonWord, checkWord]).encode("utf-8")
         out, err = proc.communicate(input=moduleInput)

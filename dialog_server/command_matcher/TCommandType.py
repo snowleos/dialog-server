@@ -175,17 +175,17 @@ TCommandType = {
     "Agree": {
         "OperationType": TExecObjectStub,
         "Description": "согласиться с утверждением"
-        }
+        },
 
     "Disagree": {
         "OperationType": TExecObjectStub,
         "Description": "не согласиться с утверждением"
-        }
+        },
 
     "Cancel": {
         "OperationType": TExecObjectStub,
         "Description": "отменить выполнение команды"
-        }
+        },
 
     "Repeat": {
         "OperationType": TExecObjectStub,

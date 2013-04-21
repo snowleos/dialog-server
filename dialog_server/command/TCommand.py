@@ -25,6 +25,8 @@ class TCommand:
         self.ExecStatus = 0
         self.ResultText = ""
         self.DebugText = ""
+        # заполняется классом TFactExtractor
+        self.FactsList = list()
 
     def __call__(self):
         self.ExecStatus, self.ResultText, self.DebugText = self.CmdExecObj(self)
@@ -44,6 +46,7 @@ class TCommand:
         self.ExecStatus = int(jsonObj["ExecStatus"])
         self.ResultText = jsonObj["ResultText"]
         self.DebugText = jsonObj["DebugText"]
+        self.FactsList = jsonObj["FactsList"]
 
     # returns JSON string
     def Write(self):
@@ -60,7 +63,8 @@ class TCommand:
             "Prob": self.Prob,
             "ExecStatus": self.ExecStatus,
             "ResultText": self.ResultText,
-            "DebugText": self.DebugText
+            "DebugText": self.DebugText,
+            "FactsList": self.FactsList
             })
         print binData
         return binData

@@ -45,6 +45,8 @@ dialog_server/exec_objects/TExecObjectBase
 dialog_server/exec_objects/TExecObjectMetaCommand
 dialog_server/exec_objects/TExecObjectOperation
 dialog_server/exec_objects/TExecObjectSpecify
+dialog_server/fact_extract/
+dialog_server/fact_extract/TFactExtractor
 dialog_server/http_client/
 dialog_server/http_client/THttpReply
 dialog_server/http_server/
