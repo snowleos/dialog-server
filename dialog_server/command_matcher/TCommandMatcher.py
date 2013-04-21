@@ -33,14 +33,14 @@ class TCommandMatcher:
         probAvg = 0.0
         if probsCnt != 0:
             probAvg = probsSum / probsCnt
-            # check mostProbCmd. if it differs less than 15% of average
+            # check mostProbCmd. if it differs less than 12% of average
             # then set it as DefaultCommand
-            if ((mostProbCmd().Prob - probAvg) / probAvg) < 0.15:
+            if ((mostProbCmd().Prob - probAvg) / probAvg) < 0.12:
                 mostProbCmd().Name = "DefaultCommand"
                 print >> sys.stderr, "TCommandMatcher:\n" + \
-                        "(mostProbCmd().Prob - probAvg) / probAvg) < 0.15\n"+ \
+                        "(mostProbCmd().Prob - probAvg) / probAvg) < 0.12\n"+ \
                         "("+str(mostProbCmd().Prob)+" - "+str(probAvg)+") / "+str(probAvg)+") = "+ \
-                        str((mostProbCmd().Prob - probAvg) / probAvg) + "< 0.15"
+                        str((mostProbCmd().Prob - probAvg) / probAvg) + "< 0.12"
 
         commandsToExecList.append(TCommandCreator.CreateNewCommand(mostProbCmd(), command))
 

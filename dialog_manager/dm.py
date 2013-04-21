@@ -34,8 +34,6 @@ commands:
     via: ''
   ScheduleMeeting:
     room:
-    time:
-    duration:
     person:
 '''
 
@@ -86,7 +84,8 @@ class DM(object):
                 log("Нашли шаблон команды", template)
                 self.stm.append(template)
                 log("Переключили контекст", self.stm)
-            else self.stm = []
+            else:
+                self.stm = []
         if len(self.stm):
             # дополняем фактами текущий контекст
             context = self.stm[-1]
