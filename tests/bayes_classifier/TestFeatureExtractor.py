@@ -14,6 +14,9 @@ from dialog_server.classifier.TBayesFeatureExtractor import *
 from dialog_server.fact_extract.TFactExtractor import *
 PROJECT_BASE_DIR = os.getcwd() + "/../.."
 
+TEST_PHRASES_FILE = "test_phrases_little.txt"
+PREPROC_CMDS_FILE = "preproc_cmds_little.txt"
+
 # init all main objects
 parser = TParser(\
         confPath=PROJECT_BASE_DIR + \
@@ -25,17 +28,19 @@ command = TCommand()
 factExtractor = TFactExtractor(PROJECT_BASE_DIR)
 
 # make preprocessed commands
-FCMD = open("test_phrases.txt", "r")
-FSERCMD = open("preproc_cmds.txt", "w")
-for line in FCMD:
-    cmdType, cmdText = line[:-1].decode('utf-8').split("\t")
-    parser(command, cmdText)
-    factExtractor(command)
-    time.sleep(0.5)
-    command.CmdType = cmdType
-    outStr = command.Write()
-    FSERCMD.write(outStr+"\n")
-FSERCMD.close()
+if not os.path.exists(PREPROC_CMDS_FILE):
+    FCMD = open(TEST_PHRASES_FILE, "r")
+    FSERCMD = open(PREPROC_CMDS_FILE, "w")
+    for line in FCMD:
+        if line.find("\t") != -1:
+            cmdType, cmdText = line[:-1].decode('utf-8').split("\t")
+            parser(command, cmdText)
+            factExtractor(command)
+            time.sleep(0.5)
+            command.CmdType = cmdType
+            outStr = command.Write()
+            FSERCMD.write(outStr+"\n")
+    FSERCMD.close()
 
 # test json serializing
 """
@@ -48,12 +53,15 @@ for line in FSERCMD:
 """
 
 # TestFeatureExtractor
-"""
+
 extr = TBayesFeatureExtractor()
-FSERCMD = open("preproc_cmds.txt", "r")
+FSERCMD = open(PREPROC_CMDS_FILE, "r")
 for line in FSERCMD:
     command.Read(line[:-1])
+    print command.RawText
     extr(command)
+    for ft in command.Features:
+        print ft
     print ""
 
-"""
+
