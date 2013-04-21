@@ -235,3 +235,18 @@ ChatBot	давай пофилософствуем
 ChatBot	поболтаем о чем-нибудь
 ChatBot	развлеки меня
 ChatBot	скажи что-нибудь прикольное
+Cancel	отмени
+Cancel	забей
+Cancel	не нужно
+Repeat	повтори
+Repeat	не понял
+Repeat	покажи
+Disagree	нет
+Disagree	не то
+Agree	да
+Agree	ок
+Agree	окей
+Agree	хорошо
+Agree	замечательно
+Agree	одобряю
+Agree	давай
