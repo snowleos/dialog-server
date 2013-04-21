@@ -52,7 +52,7 @@ class YHBot(JabberBot):
         command = TCommand()
         self.parser(command, u'%s %s' % (cmd, args))
         # extract facts
-        factExtractor(command)
+        self.factExtractor(command)
 
         commandsToExecList = list()
         self.cmdMatcher(command, commandsToExecList)
