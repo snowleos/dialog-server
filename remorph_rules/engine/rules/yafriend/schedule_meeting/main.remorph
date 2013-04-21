@@ -1,0 +1,4 @@
+
+def meeting_room = [?gzt=meeting_room];
+
+rule meeting_room_order = (<room> $meeting_room);

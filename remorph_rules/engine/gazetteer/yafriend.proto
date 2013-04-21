@@ -1,0 +1,6 @@
+import "base.proto";
+
+message TYaFriendMeetingRoom: TArticle {
+    optional string text = 2;
+}
+

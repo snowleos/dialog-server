@@ -1,0 +1,14 @@
+
+import "factmeta.proto";
+
+package NFact;
+
+message ScheduleMeeting {
+    option (matcher_type) = REMORPH;
+    option (matcher) = "bin/yafriend.schedule_meeting.remorph.bin";
+    option (search_type) = SEARCH_ALL;
+    option (gazetteer) = "bin/yafriend.gzt.bin";
+    
+    optional string room = 1;
+}
+
