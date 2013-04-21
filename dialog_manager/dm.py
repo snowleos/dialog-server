@@ -118,20 +118,19 @@ class DM(object):
         print "Guessing '%s': %s" % (c_key, result)
         return result
 
+    def generate_phrase(self, cmd):
+        phrase = []
+        if 'run' in cmd:
+            phrase.append("Запускаем:")
+            for key in cmd['run']:
+                phrase.append("%s(%s)" % (key, cmd['run'][key]))
+        if 'ask' in cmd:
+            phrase.append("Укажите")
+            key = cmd['ask']
+            if key in DICTIONARY:
+                phrase.append(DICTIONARY[key])
 
-def generate_phrase(cmd):
-    phrase = []
-    if 'run' in cmd:
-        phrase.append("Запускаем:")
-        for key in cmd['run']:
-            phrase.append("%s(%s)" % (key, cmd['run'][key]))
-    if 'ask' in cmd:
-        phrase.append("Укажите")
-        key = cmd['ask']
-        if key in DICTIONARY:
-            phrase.append(DICTIONARY[key])
-
-    return ' '.join(phrase)
+        return ' '.join(phrase)
 
 
 def main():
@@ -140,26 +139,26 @@ def main():
         ('cmd', 'go'),
         ('dst', 'велотрек в крылатском'),
     ])
-    result = generate_phrase(dm.execute())
+    result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
 
     dm.supplement_context([
         ('src', 'Льва Толстого, 16'),
     ])
-    result = generate_phrase(dm.execute())
+    result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
 
     dm.supplement_context([
         ('cmd', 'ScheduleMeeting'),
         ('room', '404'),
     ])
-    result = generate_phrase(dm.execute())
+    result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
 
     dm.supplement_context([
         ('duration', '1 час'),
     ])
-    result = generate_phrase(dm.execute())
+    result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
 
 
