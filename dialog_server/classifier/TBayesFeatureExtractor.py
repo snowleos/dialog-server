@@ -49,7 +49,8 @@ TBayesFeatureTypes = {
         "031": "наличие связки V неPR S не более чем через одно слово",
         "032": "наличие слова на иностранном языке (но не на украинском)",
         "033": "связка ADVPRO или APRO и безличный глагол (как называется)",
-        "034": "PART частица"
+        "034": "PART частица",
+        "035": " наличие true или отсутствие false частицы 'не' PART частица"
         }
 
 
@@ -57,28 +58,44 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
     def __init__(self):
         TBaseFeatureExtractor.__init__(self)
 
+    def __Append(self, featuresList, feat):
+        # do not add same strings
+        if len(featuresList) == 0:
+            featuresList.append(feat)
+        else:
+            if featuresList[-1] != feat:
+                featuresList.append(feat)
+
+    def __HasLemmasOfDifferentWordType(self, lexem, wordType):
+        hasDifferent = False
+        for lemma in lexem.get("Lemmas", {}):
+            for grammem in lemma.get("Grammems", []):
+                if wordType not in grammem:
+                    hasDifferent = True
+        return hasDifferent
+
     def __call__(self, command):
         TBaseFeatureExtractor.__call__(self)
         featuresList = list()
 
         #"001": "raw word",
         for token in command.Preprocessed.get("Tokens", {}):
-            featuresList.append(u"001: " + token["Text"])
+            self.__Append(featuresList, u"001: " + token["Text"])
 
         #"002": "lexem",
         for lexem in command.Preprocessed.get("Morph", []):
             for lemma  in lexem.get("Lemmas", {}):
                 if lemma.get("Language", "none") == "ru":
-                    featuresList.append(u"002: " + lemma.get("Text", ""))
+                    self.__Append(featuresList, u"002: " + lemma.get("Text", ""))
 
         #"003": "count of words",
-        featuresList.append(u"003: " + str(len(command.Preprocessed.get("Tokens", {}))))
+        self.__Append(featuresList, u"003: " + str(len(command.Preprocessed.get("Tokens", {}))))
 
         #"004": "count of words without stop words ",
         cnt004 = len(command.Preprocessed.get("Tokens", {}))
         if "StopWords" in command.Preprocessed:
             cnt004 = cnt004 - len(command.Preprocessed["StopWords"]["Tokens"])
-        featuresList.append(u"004: " + str(cnt004))
+        self.__Append(featuresList, u"004: " + str(cnt004))
 
         #"005": "count of Nouns",
         cnt005 = 0
@@ -90,7 +107,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                         if grammem[0:2] == "S ":
                             isNoun = 1
                     cnt005 += isNoun
-        featuresList.append(u"005: " + str(cnt005))
+        self.__Append(featuresList, u"005: " + str(cnt005))
 
         #"006": "count of Verbs",
         cnt006 = 0
@@ -102,17 +119,18 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                         if grammem[0:2] == "V ":
                             isV = 1
                     cnt006 += isV
-        featuresList.append(u"006: " + str(cnt006))
+        self.__Append(featuresList, u"006: " + str(cnt006))
 
         #"007": "Noun + падеж",
         for lexem in command.Preprocessed.get("Morph", []):
-            for lemma in lexem.get("Lemmas", []):
-                if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma.get("Grammems", []):
-                        if grammem[0:2] == "S ":
-                            matchPadej = re.search("abl|acc|dat|gen|ins|loc|nom|part|voc", grammem)
-                            if matchPadej != None:
-                                featuresList.append(u"007: " + lemma.get("Text", "") + " " + matchPadej.group(0))
+            if self.__HasLemmasOfDifferentWordType(lexem, u"S ") == False:
+                for lemma in lexem.get("Lemmas", []):
+                    if lemma.get("Language", "none") == "ru":
+                        for grammem in lemma.get("Grammems", []):
+                            if grammem[0:2] == "S ":
+                                matchPadej = re.search("abl|acc|dat|gen|ins|loc|nom|part|voc", grammem)
+                                if matchPadej != None:
+                                    self.__Append(featuresList, u"007: " + lemma.get("Text", "") + " " + matchPadej.group(0))
 
         #"008": "формы глагола + падеж существительного, все со всеми",
         allVerbs = list()
@@ -131,7 +149,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                                 allVerbs.append(matchForm.group(0))
         for v in allVerbs:
             for n in allNouns:
-                featuresList.append(u"008: " + v + " " + "n")
+                self.__Append(featuresList, u"008: " + v + " " + "n")
 
         #"009": "местоименное наречие ADVPRO",
         for lexem in command.Preprocessed.get("Morph", []):
@@ -139,7 +157,7 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:6] == "ADVPRO":
-                            featuresList.append(u"009: " + lemma.get("Text", ""))
+                            self.__Append(featuresList, u"009: " + lemma.get("Text", ""))
 
         #"010": "Глагол + все свойства",
         for lexem in command.Preprocessed.get("Morph", []):
@@ -147,15 +165,16 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                 if lemma.get("Language", "none") == "ru":
                     for grammem in lemma.get("Grammems", []):
                         if grammem[0:2] == "V ":
-                            featuresList.append(u"010: " + lemma.get("Text", "") + " " + grammem)
+                            self.__Append(featuresList, u"010: " + lemma.get("Text", "") + " " + grammem)
 
         #"011": "Noun + все свойства",
         for lexem in command.Preprocessed.get("Morph", []):
-            for lemma in lexem.get("Lemmas", []):
-                if lemma.get("Language", "none") == "ru":
-                    for grammem in lemma.get("Grammems", []):
-                        if grammem[0:2] == "S ":
-                            featuresList.append(u"010: " + lemma.get("Text", "") + " " + grammem)
+            if self.__HasLemmasOfDifferentWordType(lexem, u"S ") == False:
+                for lemma in lexem.get("Lemmas", []):
+                    if lemma.get("Language", "none") == "ru":
+                        for grammem in lemma.get("Grammems", []):
+                            if grammem[0:2] == "S ":
+                                self.__Append(featuresList, u"011: " + lemma.get("Text", "") + " " + grammem)
 
         #"012": "count of Adjectives",
         #"013": "Adj + свойства ",
@@ -165,18 +184,98 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         #"017": "yari command type",
         #"018": "Grammem of each word",
         #"019": "совершенность + переходность глагола pf ipf tran intr",
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                if lemma.get("Language", "none") == "ru":
+                    for grammem in lemma.get("Grammems", []):
+                        for gr in grammem.split(" "):
+                            if gr in ["pf", "ipf", "tran", "intr"]:
+                                self.__Append(featuresList, u"019: " + gr)
+
         #"020": "имеет местоимение SPRO или APRO",
         #"021": "имеет Сущ в именительном или винительном ",
         #"022": "имеет Сущ persn, patrn, famn, mf, anim",
+        hasAnimNoun = False
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                if lemma.get("Language", "none") == "ru":
+                    for grammem in lemma.get("Grammems", []):
+                        for gr in grammem.split(" "):
+                            if gr in ["persn", "patrn", "famn", "mf", "anim"]:
+                                hasAnimNoun = True
+        if hasAnimNoun == True:
+            self.__Append(featuresList, u"022: 1")
+
         #"023": "имеет Сущ geo, abbr, loc",
         #"024": "имеет ANUM | A рядом с S",
         #"025": "падеж сущ рядом с глаголом",
         #"026": "отношение к-ва S к к-ву words without stop words",
+
         #"027": "PR",
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                if "PR" in lemma.get("Grammems", []):
+                    self.__Append(featuresList, u"027: " + lemma.get("Text", ""))
+
         #"028": "наличие связки V PR S в такой последовательности",
         #"029": "наличие связки PR|ADVPRO|SPRO|APRO и V не более чем через одно слово",
         #"030": "наличие связки PR|ADVPRO|SPRO|APRO и S не более чем через одно слово",
         #"031": "наличие связки V неPR S не более чем через одно слово"
+        feature031Found = False
+        verbFound = False
+        prFound = False
+        nounFound = False
+        wordDist = 0
+        #tokenLen = 0
+        for lexem in command.Preprocessed.get("Morph", []):
+            #tokens = lexem.get("Tokens", {})
+            #tokensLen = int(tokens.get("End", "0")) - int(tokens.get("Begin", "0"))
+            for lemma in lexem.get("Lemmas", []):
+                for grammem in lemma.get("Grammems", []):
+                    if grammem[0:3] == "PR ":
+                        prFound = True
+                if wordDist > 3 or prFound == True:
+                    verbFound = False
+                    prFound = False
+                    nounFound = False
+                    wordDist = 0
+
+                elif verbFound == False:
+                    for grammem in lemma.get("Grammems", []):
+                        if grammem[0:2] == "V ":
+                            verbFound = True
+                            prFound = False
+                            nounFound = False
+                            wordDist = 1
+                
+                elif verbFound == True:
+                    wordDist += 1
+                    for grammem in lemma.get("Grammems", []):
+                        if grammem[0:2] == "S ":
+                            nounFound = True
+                
+                if verbFound == True and nounFound == True and wordDist <= 3:
+                    feature031Found = True
+        if feature031Found == True:
+            self.__Append(featuresList, u"031: " + "1")
+
+
+
+        #"032": "наличие слова на иностранном языке (но не на украинском)",
+        #"033": "связка ADVPRO или APRO и безличный глагол (как называется)",
+        #"034": "PART частица"
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                if "PART" in lemma.get("Grammems", []):
+                    self.__Append(featuresList, u"034: " + lemma.get("Text", ""))
+
+        #"035": " наличие true или отсутствие false частицы 'не' PART частица"
+        hasPartNot = 0
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                if (lemma.get("Text", "") == u"не") and ("PART" in lemma.get("Grammems", [])):
+                    hasPartNot = 1
+        self.__Append(featuresList, u"035: " + str(hasPartNot))
 
         #for sss in featuresList:
         #    print sss

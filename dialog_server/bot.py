@@ -10,6 +10,7 @@ from dialog_server.classifier.TExactClassifier import *
 from dialog_server.command.TCommand import *
 from dialog_server.command.TCommandCreator import *
 from dialog_server.exec_objects.TExecObjectBase import *
+from dialog_server.fact_extract.TFactExtractor import *
 import common_lib.common_ops as common_ops
 import dialog_server.command_matcher.TCommandMatcher as TCommandMatcher
 import dialog_server.command_matcher.TParser as TParser
@@ -38,6 +39,8 @@ class YHBot(JabberBot):
         )
         bayesClassifier.LoadModel()
         self.cmdMatcher.ClassifiersList.append((TBayesFeatureExtractor(), bayesClassifier))
+        self.factExtractor = TFactExtractor(PROJECT_BASE_DIR)
+
 
     @botcmd
     def echo(self, mess, args):
@@ -48,6 +51,9 @@ class YHBot(JabberBot):
         print u'%s' % mess
         command = TCommand()
         self.parser(command, u'%s %s' % (cmd, args))
+        # extract facts
+        factExtractor(command)
+
         commandsToExecList = list()
         self.cmdMatcher(command, commandsToExecList)
 
