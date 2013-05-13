@@ -83,19 +83,12 @@ class DM(object):
             if cmd == 'Cancel':
                 self.stm = []
             elif cmd in self.ltm['commands']:
-                # проверяем что пришла НЕ та же самая команда
-                notSameCmd = True
-                if len(self.stm):
-                    if self.stm[-1].get('CmdType', None) == cmd:
-                        notSameCmd = False
-                if notSameCmd:
-                    template = deepcopy(self.ltm['commands'][cmd])
-                    template['CmdType'] = cmd
-                    log("Нашли шаблон команды", template)
-                    self.stm.append(template)
-                    log("Переключили контекст", self.stm)
-            else:
-                self.stm = []
+                if (len(self.stm) and self.stm[-1].get('CmdType', None) != cmd) or (len(self.stm) == 0):
+                        template = deepcopy(self.ltm['commands'][cmd])
+                        template['CmdType'] = cmd
+                        log("Нашли шаблон команды", template)
+                        self.stm.append(template)
+                        log("Переключили контекст", self.stm)
         if len(self.stm):
             # дополняем фактами текущий контекст
             context = self.stm[-1]
