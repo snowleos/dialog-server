@@ -36,7 +36,6 @@ commands:
     src:
     via: ''
   ScheduleMeeting:
-    CmdType: "ScheduleMeeting"
     room:
     person:
 '''
@@ -83,7 +82,7 @@ class DM(object):
         cmd = facts.pop('CmdType', None)
         if cmd:
             if cmd == 'Cancel':
-                self.stm = []
+                self.stm.pop()
             elif cmd in self.ltm['commands']:
                 if (len(self.stm) and self.stm[-1].get('CmdType', None) != cmd) or (len(self.stm) == 0):
                         template = deepcopy(self.ltm['commands'][cmd])
@@ -91,6 +90,14 @@ class DM(object):
                         log("Нашли шаблон команды", template)
                         self.stm.append(template)
                         log("Переключили контекст", self.stm)
+            else:
+                template = {
+                    'CmdType': cmd,
+                    'params': 'default',
+                }
+                log("Сгенерировали шаблон несуществующей команды", template)
+                self.stm.append(template)
+                log("Переключили контекст", self.stm)
         if len(self.stm):
             # дополняем фактами текущий контекст
             context = self.stm[-1]
