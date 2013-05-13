@@ -56,6 +56,7 @@ def aggregate_facts(facts):
     for (key, data) in facts:
         if not key in result:
             result[key] = []
+        data = data.encode('utf8') if isinstance(data, unicode) else data
         result[key].append(data)
     for key in result:
         if len(result[key]) == 1:
@@ -119,6 +120,7 @@ class DM(object):
                         return {'ask': c_key}
                     else:
                         context[c_key] = concept
+            self.stm = []
             return {'run': context}
         else:
             return {'ask': 'CmdType'}
@@ -157,7 +159,7 @@ def main():
     })
     dm.supplement_context([
         ('CmdType', 'go'),
-        ('dst', 'велотрек в крылатском'),
+        ('dst', u'велотрек в крылатском'),
     ])
     result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
