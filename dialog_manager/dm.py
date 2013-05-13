@@ -57,7 +57,7 @@ def aggregate_facts(facts):
     for (key, data) in facts:
         if not key in result:
             result[key] = []
-        data = data.encode('utf8') if isinstance(data, unicode) else data
+        #data = data.encode('utf8') if isinstance(data, unicode) else data
         result[key].append(data)
     for key in result:
         if len(result[key]) == 1:
@@ -139,7 +139,13 @@ class DM(object):
         if 'run' in cmd:
             phrase.append("Запускаем:")
             for key in cmd['run']:
-                phrase.append("%s(%s)" % (key, cmd['run'][key]))
+                params = cmd['run'][key]
+                if not isinstance(params, str) and not isinstance(params, unicode):
+                    params = ', '.join(
+                        word if isinstance(word, unicode) else word.decode('utf8')
+                        for word in params
+                    )
+                phrase.append("%s(%s)" % (key, params))
         if 'ask' in cmd:
             phrase.append("Укажите")
             key = cmd['ask']
@@ -175,9 +181,12 @@ def main():
     dm.supplement_context([
         ('CmdType', 'ScheduleMeeting'),
         ('room', '404'),
+        ('person', 'иван петров'),
+        ('person', 'петр сидоров')
     ])
     result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
+    print result
 
     dm.supplement_context([
         ('duration', '1 час'),
