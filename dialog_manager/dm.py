@@ -29,6 +29,8 @@ def log(comment, object):
 # начальное состояние long-term memory, шаблоны команд и концептов
 LTM = '''
 commands:
+  Weather:
+    time: 'сейчас'
   go:
     dst:
     src:
@@ -113,7 +115,7 @@ class DM(object):
                         return {'ask': c_key}
                     else:
                         context[c_key] = concept
-            self.stm = []
+            self.stm.pop()
             return {'run': context}
         else:
             return {'ask': 'CmdType'}
