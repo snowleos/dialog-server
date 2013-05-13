@@ -21,7 +21,7 @@ def pretty_print(object):
 
 def log(comment, object):
     print comment
-    if object != None:
+    if object is not None:
         pretty_print(object)
     print
 
@@ -30,7 +30,7 @@ def log(comment, object):
 LTM = '''
 commands:
   go:
-    dst: 
+    dst:
     src:
     via: ''
   ScheduleMeeting:
@@ -49,6 +49,7 @@ DICTIONARY = {
     'CmdType': 'команду',
     'person': 'список приглашенных',
 }
+
 
 def aggregate_facts(facts):
     result = {}
@@ -86,7 +87,7 @@ class DM(object):
                 if len(self.stm):
                     if self.stm[-1].get('CmdType', None) == cmd:
                         notSameCmd = False
-                if notSameCmd == True:
+                if notSameCmd:
                     template = deepcopy(self.ltm['commands'][cmd])
                     template['CmdType'] = cmd
                     log("Нашли шаблон команды", template)
@@ -141,12 +142,19 @@ class DM(object):
             if key in DICTIONARY:
                 phrase.append(DICTIONARY[key])
 
-        log(' '.join(phrase), None)
-        return ' '.join(phrase)
+        return ' '.join(
+            word if isinstance(word, unicode) else word.decode('utf8')
+            for word in phrase
+        )
 
 
 def main():
     dm = DM()
+    print dm.generate_phrase({
+        'run': {
+            'hello': u'котя',
+        }
+    })
     dm.supplement_context([
         ('CmdType', 'go'),
         ('dst', 'велотрек в крылатском'),
