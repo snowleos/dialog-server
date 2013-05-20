@@ -36,7 +36,6 @@ commands:
     src:
     via: ''
   ScheduleMeeting:
-    CmdType: "ScheduleMeeting"
     room:
     person:
 '''
@@ -58,7 +57,7 @@ def aggregate_facts(facts):
     for (key, data) in facts:
         if not key in result:
             result[key] = []
-        data = data.encode('utf8') if isinstance(data, unicode) else data
+        #data = data.encode('utf8') if isinstance(data, unicode) else data
         result[key].append(data)
     for key in result:
         if len(result[key]) == 1:
@@ -83,7 +82,7 @@ class DM(object):
         cmd = facts.pop('CmdType', None)
         if cmd:
             if cmd == 'Cancel':
-                self.stm = []
+                self.stm.pop()
             elif cmd in self.ltm['commands']:
                 if (len(self.stm) and self.stm[-1].get('CmdType', None) != cmd) or (len(self.stm) == 0):
                         template = deepcopy(self.ltm['commands'][cmd])
@@ -94,6 +93,14 @@ class DM(object):
                         log("Нашли шаблон команды", template)
                         self.stm.append(template)
                         log("Переключили контекст", self.stm)
+            else:
+                template = {
+                    'CmdType': cmd,
+                    'params': 'default',
+                }
+                log("Сгенерировали шаблон несуществующей команды", template)
+                self.stm.append(template)
+                log("Переключили контекст", self.stm)
         if len(self.stm):
             # дополняем фактами текущий контекст
             context = self.stm[-1]
@@ -147,6 +154,13 @@ class DM(object):
                     phrase.append(" ])")
                 else:
                     phrase.append("%s(%s)" % (key, cmd['run'][key]))
+                #params = cmd['run'][key]
+                #if not isinstance(params, str) and not isinstance(params, unicode):
+                #    params = ', '.join(
+                #        word if isinstance(word, unicode) else word.decode('utf8')
+                #        for word in params
+                #    )
+                #phrase.append("%s(%s)" % (key, params))
         if 'ask' in cmd:
             phrase.append("Укажите")
             key = cmd['ask']
@@ -182,9 +196,12 @@ def main():
     dm.supplement_context([
         ('CmdType', 'ScheduleMeeting'),
         ('room', '404'),
+        ('person', 'иван петров'),
+        ('person', 'петр сидоров')
     ])
     result = dm.generate_phrase(dm.execute())
     log("Результат выполнения", result)
+    print result
 
     dm.supplement_context([
         ('duration', '1 час'),
