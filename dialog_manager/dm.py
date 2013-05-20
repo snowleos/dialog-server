@@ -87,6 +87,9 @@ class DM(object):
             elif cmd in self.ltm['commands']:
                 if (len(self.stm) and self.stm[-1].get('CmdType', None) != cmd) or (len(self.stm) == 0):
                         template = deepcopy(self.ltm['commands'][cmd])
+                        for key in template:
+                            if key == "person":
+                                template[key] = []
                         template['CmdType'] = cmd
                         log("Нашли шаблон команды", template)
                         self.stm.append(template)
@@ -97,7 +100,13 @@ class DM(object):
             log("Текущий контекст", context)
             for concept in context:
                 if concept in facts:
-                    context[concept] = facts[concept]
+                    if type(context[concept]) is list:
+                        if type(facts[concept]) is list:
+                            context[concept].extend(facts[concept])
+                        else:
+                            context[concept].append(facts[concept])
+                    else:
+                        context[concept] = facts[concept]
 
             log("Дополнили фактами", self.stm)
 
@@ -132,7 +141,12 @@ class DM(object):
         if 'run' in cmd:
             phrase.append("Запускаем:")
             for key in cmd['run']:
-                phrase.append("%s(%s)" % (key, cmd['run'][key]))
+                if type(cmd['run'][key]) is list:
+                    phrase.append("%s([ " % key)
+                    phrase.append("%s" % ", ".join(cmd['run'][key]))
+                    phrase.append(" ])")
+                else:
+                    phrase.append("%s(%s)" % (key, cmd['run'][key]))
         if 'ask' in cmd:
             phrase.append("Укажите")
             key = cmd['ask']
