@@ -14,8 +14,10 @@ from dialog_server.classifier.TBayesFeatureExtractor import *
 from dialog_server.fact_extract.TFactExtractor import *
 PROJECT_BASE_DIR = os.getcwd() + "/../.."
 
-TEST_PHRASES_FILE = "test_phrases_little.txt"
-PREPROC_CMDS_FILE = "preproc_cmds_little.txt"
+#TEST_PHRASES_FILE = "test_phrases_little.txt"
+#PREPROC_CMDS_FILE = "preproc_cmds_little.txt"
+TEST_PHRASES_FILE = "test_phrases.txt"
+PREPROC_CMDS_FILE = "preproc_cmds.txt"
 
 # init all main objects
 parser = TParser(\

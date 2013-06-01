@@ -275,3 +275,17 @@ Agree	ага
 Agree	делай
 Agree	правильно
 Agree	йес
+RemoveConcept	нет не тот параметр
+RemoveConcept	удали параметр
+RemoveConcept	не нужно добавлять
+RemoveConcept	не приглашай ипполита приглашалова
+RemoveConcept	не в этой
+RemoveConcept	я ошибся
+RemoveConcept	передумал
+RemoveConcept	не зови
+RemoveConcept	а нет стой не то
+RemoveConcept	упс ошибочка
+RemoveConcept	не хочу чтобы был
+RemoveConcept	не правильно назвал
+RemoveConcept	не в это время
+RemoveConcept	сказал не то
