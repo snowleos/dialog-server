@@ -193,6 +193,11 @@ TCommandType = {
         "Description": "отменить выполнение команды"
         },
 
+    "RemoveConcept": {
+        "OperationType": TExecObjectStub,
+        "Description": "удалить концепт"
+        },
+
     "Repeat": {
         "OperationType": TExecObjectStub,
         "Description": "повторить"
