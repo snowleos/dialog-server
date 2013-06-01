@@ -5,6 +5,13 @@ from copy import deepcopy
 from datetime import datetime
 import sys
 from pprint import pprint
+from dialog_server.command_matcher.TCommandType import *
+from dialog_server.command.TCommand import *
+from dialog_server.exec_objects.TExecObjectSpecify import *
+from dialog_server.exec_objects.TExecObjectOperation import *
+from dialog_server.exec_objects.TExecObjectMetaCommand import *
+from dialog_server.exec_objects.TExecObjectStub import *
+
 
 
 def pretty_print(object):
@@ -38,6 +45,8 @@ commands:
   ScheduleMeeting:
     room:
     person:
+  News:
+    source: 'RSS feed'
 '''
 
 DICTIONARY = {
@@ -49,6 +58,7 @@ DICTIONARY = {
     'duration': 'продолжительность',
     'CmdType': 'команду',
     'person': 'список приглашенных',
+    'request': 'поисковый запрос'
 }
 
 
@@ -83,6 +93,8 @@ class DM(object):
         if cmd:
             if cmd == 'Cancel':
                 self.stm.pop()
+            elif cmd == "DefaultCommand":
+                """do nothing"""
             elif cmd in self.ltm['commands']:
                 if (len(self.stm) and self.stm[-1].get('CmdType', None) != cmd) or (len(self.stm) == 0):
                         template = deepcopy(self.ltm['commands'][cmd])
@@ -143,24 +155,30 @@ class DM(object):
         print "Guessing '%s': %s" % (c_key, result)
         return result
 
-    def generate_phrase(self, cmd):
+    def generate_phrase(self, cmd, command):
         phrase = []
         if 'run' in cmd:
             phrase.append("Запускаем:")
             for key in cmd['run']:
+                # 1. пишем юзеру, что мы делаем
                 if type(cmd['run'][key]) is list:
                     phrase.append("%s([ " % key)
                     phrase.append("%s" % ", ".join(cmd['run'][key]))
                     phrase.append(" ])")
                 else:
                     phrase.append("%s(%s)" % (key, cmd['run'][key]))
-                #params = cmd['run'][key]
-                #if not isinstance(params, str) and not isinstance(params, unicode):
-                #    params = ', '.join(
-                #        word if isinstance(word, unicode) else word.decode('utf8')
-                #        for word in params
-                #    )
-                #phrase.append("%s(%s)" % (key, params))
+            # 2. если можно, выполняем
+            if isinstance(command.CmdExecObj, dialog_server.exec_objects.TExecObjectOperation.TExecObjectOperation):
+                log("ВЫПОЛНЯЕМ КОМАНДУ", "")
+                command()
+                log("Статус", command.ExecStatus)
+                log("Отладка", command.DebugText)
+                log("Результат", command.ResultText)
+                phrase.append("\nРезультат выполнения")
+                phrase.append(command.ResultText)
+            else:
+                phrase.append("\nОперация не реализована")
+
         if 'ask' in cmd:
             phrase.append("Укажите")
             key = cmd['ask']
