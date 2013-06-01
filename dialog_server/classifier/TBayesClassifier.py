@@ -26,11 +26,15 @@ class TBayesClassifier(TBaseClassifier):
         maxCl = ""
         maxClProb = -1
         for cl in self.Model.Classes.keys():
+            #if command.RawText == u"согласен":
+            #    print cl
             sumClassFeatures = 0
             clProbDict = self.Model.FeatureProbs.get(cl, None)
             if clProbDict != None:
                 for feat in command.Features:
-                    featProb = clProbDict.get(feat, 10**(-7))
+                    featProb = clProbDict.get(feat, 10**(-17))
+                    #if command.RawText == u"согласен":
+                    #    print feat, featProb, -log(featProb)
                     sumClassFeatures += -log(featProb)
             # make probabilities from sum logs
             # TODO: make recognition of words, most specific to chosen command
@@ -72,9 +76,18 @@ class TBayesClassifier(TBaseClassifier):
             self.Model.FeatureProbs[command.CmdType][feat] += 1
 
     def FinishLearn(self):
+        # взвешиваем верояиности фич на среднее количество сэмплов, чтобы сгладить
+        # побочные эффекты от разного количества примеров
+        clAvg = 0.0
+        for cl in self.Model.Classes:
+            clAvg += self.Model.ClassSamplesCount[cl]
+        clAvg /= len(self.Model.Classes)
+        print "clAvg:", clAvg
+
         for cl in self.Model.Classes:
             for feat in self.Model.FeatureProbs[cl]:
-                self.Model.FeatureProbs[cl][feat] /= self.Model.ClassSamplesCount[cl]
+                #self.Model.FeatureProbs[cl][feat] /= self.Model.ClassSamplesCount[cl]
+                self.Model.FeatureProbs[cl][feat] /= clAvg
             self.Model.Classes[cl] /= sum(self.Model.ClassSamplesCount.values())
         
 

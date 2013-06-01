@@ -78,9 +78,12 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
         TBaseFeatureExtractor.__call__(self)
         featuresList = list()
 
+        """
         #"001": "raw word",
         for token in command.Preprocessed.get("Tokens", {}):
             self.__Append(featuresList, u"001: " + token["Text"])
+        """
+
 
         #"002": "lexem",
         for lexem in command.Preprocessed.get("Morph", []):
@@ -177,12 +180,41 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
                                 self.__Append(featuresList, u"011: " + lemma.get("Text", "") + " " + grammem)
 
         #"012": "count of Adjectives",
+        cnt = 0
+        #print command.RawText
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                for grammem in lemma.get("Grammems", []):
+                    if grammem[0:2] == "A ":
+                        cnt += 1
+                        break
+        if cnt > 0:
+            self.__Append(featuresList, u"012: " + str(cnt))
         #"013": "Adj + свойства ",
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                isOnlyAdj = True # добавляем только явные прилагательные
+                for grammem in lemma.get("Grammems", []):
+                    if grammem[0:2] != "A ":
+                        isOnlyAdj = False
+                if len(lemma.get("Grammems", [])) > 0 and isOnlyAdj == True:
+                    self.__Append(featuresList, u"013: " + lemma.get("Text", "") + " " + grammem[0])
+
+
         #"014": "has anim",
         #"015": "has geo",
         #"016": "has yari",
         #"017": "yari command type",
         #"018": "Grammem of each word",
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                # добавляем максимум первые три граммемы
+                cnt = 0
+                for grammem in lemma.get("Grammems", []):
+                    cnt += 1
+                    if cnt <= 3:
+                        self.__Append(featuresList, u"018: " + grammem)
+
         #"019": "совершенность + переходность глагола pf ipf tran intr",
         for lexem in command.Preprocessed.get("Morph", []):
             for lemma in lexem.get("Lemmas", []):
@@ -219,7 +251,53 @@ class TBayesFeatureExtractor(TBaseFeatureExtractor):
 
         #"028": "наличие связки V PR S в такой последовательности",
         #"029": "наличие связки PR|ADVPRO|SPRO|APRO и V не более чем через одно слово",
+        feature029found = False
+        prFound = False
+        verbFound = False
+        wordDist = 0
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                for grammem in lemma.get("Grammems", []):
+                    if ("PR " in grammem) or ("ADVPRO " in grammem) or ("SPRO " in grammem) or ("APRO " in grammem):
+                        prFound = True
+                if wordDist > 3:
+                    prFound = False
+                    verbFound = False
+                    wordDist = 0
+                elif prFound == True:
+                    wordDist += 1
+                    for grammem in lemma.get("Grammems", []):
+                        if grammem[0:2] == "V ":
+                            verbFound = True
+                if verbFound == True and prFound == True and wordDist <= 3:
+                    feature029found = True
+        if feature029found == True:
+            self.__Append(featuresList, u"029: " + "1")
+
         #"030": "наличие связки PR|ADVPRO|SPRO|APRO и S не более чем через одно слово",
+        feature030found = False
+        prFound = False
+        nounFound = False
+        wordDist = 0
+        for lexem in command.Preprocessed.get("Morph", []):
+            for lemma in lexem.get("Lemmas", []):
+                for grammem in lemma.get("Grammems", []):
+                    if ("PR " in grammem) or ("ADVPRO " in grammem) or ("SPRO " in grammem) or ("APRO " in grammem):
+                        prFound = True
+                if wordDist > 3:
+                    prFound = False
+                    nounFound = False
+                    wordDist = 0
+                elif prFound == True:
+                    wordDist += 1
+                    for grammem in lemma.get("Grammems", []):
+                        if grammem[0:2] == "S ":
+                            nounFound = True
+                if nounFound == True and prFound == True and wordDist <= 3:
+                    feature030found = True
+        if feature030found == True:
+            self.__Append(featuresList, u"030: " + "1")
+
         #"031": "наличие связки V неPR S не более чем через одно слово"
         feature031Found = False
         verbFound = False

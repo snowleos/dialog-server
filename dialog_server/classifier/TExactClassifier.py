@@ -14,6 +14,7 @@ class TExactClassifier(TBaseClassifier):
         
         self.Model = {
                 u"википедия": "Wiki",
+                u"вики": "Wiki",
                 u"погода": "Weather",
                 u"новости": "News",
                 u"поиск": "Search"
