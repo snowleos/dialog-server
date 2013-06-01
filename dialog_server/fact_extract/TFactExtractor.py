@@ -34,6 +34,7 @@ class TFactExtractor:
                     retStr = " ".join([retStr, token[field]])
 
             retList.append(("person", retStr))
+            print sys.stderr, "__GetFioFacts(): ", "person", retStr
         return retList
 
     def __GetRemorphFacts(self, command):
@@ -47,12 +48,23 @@ class TFactExtractor:
                     retList.append((fact, token["Value"][fact][0]))
         return retList
 
+    def __GetRequestLexemsFacts(self, command):
+        retList = []
+        if len(command.RequestLexems) > 0:
+            retList.append(("request", " ".join(command.RequestLexems)))
+        return retList
+
     def __call__(self, command):
         fioFactsList = self.__GetFioFacts(command)
         if len(fioFactsList) > 0:
             command.FactsList.extend(fioFactsList)
 
         remorphFactsList = self.__GetRemorphFacts(command)
-        if len(remorphFactsList) > 0:command.FactsList.extend(remorphFactsList)
+        if len(remorphFactsList) > 0:
+            command.FactsList.extend(remorphFactsList)
+
+        requestLexemsFacts = self.__GetRequestLexemsFacts(command)
+        if len(requestLexemsFacts) > 0:
+            command.FactsList.extend(requestLexemsFacts)
 
 
