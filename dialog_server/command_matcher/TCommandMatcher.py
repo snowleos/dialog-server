@@ -35,7 +35,7 @@ class TCommandMatcher:
             probAvg = probsSum / probsCnt
             # check mostProbCmd. if it differs less than 12% of average
             # then set it as DefaultCommand
-            if ((mostProbCmd().Prob - probAvg) / probAvg) < 0.12:
+            if ((mostProbCmd().Prob - probAvg) / probAvg) < 0.12 or (mostProbCmd().Prob < 0.07):
                 mostProbCmd().Name = "DefaultCommand"
                 print >> sys.stderr, "TCommandMatcher:\n" + \
                         "(mostProbCmd().Prob - probAvg) / probAvg) < 0.12\n"+ \

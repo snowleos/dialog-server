@@ -72,7 +72,8 @@ TCommandType = {
 
     "SearchQuestion": {
         # http://wiki.yandex-team.ru/AleksandrSibirjakov/VoprositelnyeZaprosy
-        "OperationType": TExecObjectOperation,
+        #"OperationType": TExecObjectOperation,
+        "OperationType": TExecObjectStub,
         "ModuleRelPath": "../modules/search.py ",
         "Description":   "найти в ответах"
 
@@ -170,6 +171,11 @@ TCommandType = {
     "YandexMarket": {
         "OperationType": TExecObjectStub,
         "Description": "найти на Яндекс.Маркете"
+        },
+
+    "YandexTaxi": {
+        "OperationType": TExecObjectStub,
+        "Description": "вызвать такси"
         },
 
     "Agree": {

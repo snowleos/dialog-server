@@ -47,7 +47,7 @@ class TCommandCreator:
         newCmd.CmdExecObj.Name = newCmd.CmdType
         newCmd.CmdExecObj.ModuleRelPath = GetCommandProperty(newCmd.CmdType, "ModuleRelPath")
         newCmd.RequestFields = GetCommandProperty(newCmd.CmdType, "RequestFields")
-        print "RequestFields", newCmd.RequestFields
+        #print "RequestFields", newCmd.RequestFields
 
         # TODO: set Preparer class instead of following operation
         if len(sourceCmd.LexemsList) > 0:

@@ -67,6 +67,7 @@ class TCommand:
             "FactsList": self.FactsList
             })
         print binData
+        print "CmdExecObj:", self.CmdExecObj
         return binData
 
 
